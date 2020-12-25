@@ -40,3 +40,9 @@ npm i @apollo/client graphql
 ```bash
 npm i react-router-dom
 ```
+
+- #05 Local Only Fields
+
+  > Reactive variables
+
+  > https://www.apollographql.com/docs/react/local-state/reactive-variables/
