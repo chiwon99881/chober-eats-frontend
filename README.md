@@ -28,3 +28,9 @@ npm install postcss autoprefixer
 
 > 4. create scripts in package.json
 >    "tailwind:build": "tailwind build ./src/styles/tailwind.css -o ./src/styles/styles.css",
+
+- #04 Apollo setup
+
+```bash
+npm i @apollo/client graphql
+```
