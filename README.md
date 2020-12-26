@@ -52,3 +52,5 @@ npm i react-router-dom
 ```bash
 npm i react-hook-form
 ```
+
+- #07 React Hook Form 2
