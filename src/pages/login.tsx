@@ -8,8 +8,8 @@ import {
 } from '../__generated__/loginMutation';
 
 const LOGIN_MUTATION = gql`
-  mutation loginMutation($email: String!, $password: String!) {
-    login(input: { email: $email, password: $password }) {
+  mutation loginMutation($loginInput: LoginInput!) {
+    login(input: $loginIpnut) {
       ok
       error
       token
@@ -24,12 +24,28 @@ interface ILoginForm {
 
 export const Login = () => {
   const { register, getValues, handleSubmit, errors } = useForm<ILoginForm>();
-  const [loginMutation, { loading, error, data }] = useMutation<
+  const onCompleted = (data: loginMutation) => {
+    const {
+      login: { ok, error, token },
+    } = data;
+    if (ok) {
+      console.log(token);
+    }
+  };
+  const [loginMutation, { data: loginMutationResult }] = useMutation<
     loginMutation,
     loginMutationVariables
-  >(LOGIN_MUTATION);
+  >(LOGIN_MUTATION, { onCompleted });
   const onSubmit = () => {
-    console.log(getValues());
+    const { email, password } = getValues();
+    loginMutation({
+      variables: {
+        loginInput: {
+          email,
+          password,
+        },
+      },
+    });
   };
   return (
     <div className='h-screen flex items-center justify-center bg-gray-100'>
@@ -68,6 +84,9 @@ export const Login = () => {
             <FormError errorMessage={errors.password.message} />
           )}
           <button className='mt-3 btn'>Log in</button>
+          {loginMutationResult?.login.error && (
+            <FormError errorMessage={loginMutationResult.login.error} />
+          )}
         </form>
       </div>
     </div>
