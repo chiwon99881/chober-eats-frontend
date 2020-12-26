@@ -72,3 +72,15 @@ npm i -g apollo
 
 npm i apollo
 ```
+
+- #12 Apollo Codegen
+
+  > backend에서 정의한 DTO를 통해 Query나 Mutation의 타입을 frontend에서 타입 정의에 대한 파일을 생성해준다.
+
+  > 물론 모든 backend에서 정의한 타입을 얘가 다 해주는게 아니라 이 frontend에서 gql태그를 사용하여 작성한 query나 mutation을 정의한 경로의 파일을 다 찾아서 있는것들을 하나의 파일로 만들어준다.
+
+  > 가끔 vsc terminal에서 안 먹힐때가 있는데 cmd창에서 실행하면 된다.
+
+  ```bash
+  apollo client:codegen src/__generated__ --target=typescript --outputFlat
+  ```
