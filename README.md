@@ -55,8 +55,10 @@ npm i react-hook-form
 
 - #07 React Hook Form 2
 
-- #07 Router and @types
+- #08 Router and @types
 
 ```bash
 npm i @types/react-router-dom
 ```
+
+- #09 Login Form 1
