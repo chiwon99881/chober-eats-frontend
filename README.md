@@ -46,3 +46,9 @@ npm i react-router-dom
   > Reactive variables
 
   > https://www.apollographql.com/docs/react/local-state/reactive-variables/
+
+- #06 React Hook Form
+
+```bash
+npm i react-hook-form
+```
