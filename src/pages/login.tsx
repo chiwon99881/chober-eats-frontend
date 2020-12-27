@@ -9,7 +9,7 @@ import {
 
 const LOGIN_MUTATION = gql`
   mutation loginMutation($loginInput: LoginInput!) {
-    login(input: $loginIpnut) {
+    login(input: $loginInput) {
       ok
       error
       token
@@ -30,22 +30,26 @@ export const Login = () => {
     } = data;
     if (ok) {
       console.log(token);
+    } else {
+      console.log(error);
     }
   };
-  const [loginMutation, { data: loginMutationResult }] = useMutation<
+  const [loginMutation, { data: loginMutationResult, loading }] = useMutation<
     loginMutation,
     loginMutationVariables
   >(LOGIN_MUTATION, { onCompleted });
   const onSubmit = () => {
-    const { email, password } = getValues();
-    loginMutation({
-      variables: {
-        loginInput: {
-          email,
-          password,
+    if (!loading) {
+      const { email, password } = getValues();
+      loginMutation({
+        variables: {
+          loginInput: {
+            email,
+            password,
+          },
         },
-      },
-    });
+      });
+    }
   };
   return (
     <div className='h-screen flex items-center justify-center bg-gray-100'>
@@ -70,20 +74,19 @@ export const Login = () => {
             <FormError errorMessage={errors.email.message} />
           )}
           <input
-            ref={register({ required: 'Password is required.', minLength: 5 })}
+            ref={register({ required: 'Password is required.' })}
             className='input'
             name='password'
             type='password'
             placeholder='Password'
             required
           />
-          {errors.password?.type === 'minLength' && (
-            <FormError errorMessage={'Password must be more than 5 chars.'} />
-          )}
           {errors.password?.message && (
             <FormError errorMessage={errors.password.message} />
           )}
-          <button className='mt-3 btn'>Log in</button>
+          <button className='mt-3 btn'>
+            {loading ? 'Loading...' : 'Log In'}
+          </button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
           )}
