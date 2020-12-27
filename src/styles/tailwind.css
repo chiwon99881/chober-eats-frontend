@@ -8,7 +8,7 @@
 }
 
 .btn {
-    @apply py-3 px-5 mt-3 bg-green-600 text-white text-base rounded-lg focus:outline-none hover:bg-green-700 transition-colors;
+    @apply py-3 px-5 mt-3 bg-lime-600 text-white text-base rounded-lg focus:outline-none hover:bg-lime-700 transition-colors;
 }
 
 @tailwind utilities;

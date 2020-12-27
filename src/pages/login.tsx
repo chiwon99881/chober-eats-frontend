@@ -1,6 +1,8 @@
 import { gql, useMutation } from '@apollo/client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { Button } from '../components/button';
 import { FormError } from '../components/form-error';
 import uberlogo from '../images/logo.svg';
 import {
@@ -24,7 +26,13 @@ interface ILoginForm {
 }
 
 export const Login = () => {
-  const { register, getValues, handleSubmit, errors } = useForm<ILoginForm>();
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    errors,
+    formState,
+  } = useForm<ILoginForm>({ mode: 'onChange' });
   const onCompleted = (data: loginMutation) => {
     const {
       login: { ok, error, token },
@@ -86,13 +94,23 @@ export const Login = () => {
           {errors.password?.message && (
             <FormError errorMessage={errors.password.message} />
           )}
-          <button className='btn'>
-            {loading ? '로딩중 입니다...' : '로그인'}
-          </button>
-          {loginMutationResult?.login.error && (
-            <FormError errorMessage={loginMutationResult.login.error} />
-          )}
+          <Button
+            canClick={formState.isValid}
+            loading={loading}
+            actionText={'로그인'}
+          />
+          <div className='flex w-full justify-center'>
+            {loginMutationResult?.login.error && (
+              <FormError errorMessage={loginMutationResult.login.error} />
+            )}
+          </div>
         </form>
+        <div className='mt-3'>
+          Uber는 처음이신가요?{' '}
+          <Link to='/create-account' className='text-lime-700 font-medium'>
+            계정 만들기
+          </Link>
+        </div>
       </div>
     </div>
   );
