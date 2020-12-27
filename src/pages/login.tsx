@@ -2,6 +2,7 @@ import { gql, useMutation } from '@apollo/client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { FormError } from '../components/form-error';
+import uberlogo from '../images/logo.svg';
 import {
   loginMutation,
   loginMutationVariables,
@@ -52,22 +53,23 @@ export const Login = () => {
     }
   };
   return (
-    <div className='h-screen flex items-center justify-center bg-gray-100'>
-      <div
-        className='bg-white w-full max-w-lg py-10 rounded-lg text-center 
-      border border-gray-300'
-      >
-        <span className='font-medium text-2xl text-black'>Chober-Eats</span>
+    <div className='h-screen flex flex-col items-center mt-10 lg:mt-20'>
+      <div className='w-full max-w-screen-sm flex flex-col items-center px-5'>
+        <img src={uberlogo} alt='logo' className='w-52' />
+        <div className='flex flex-col w-full pt-16'>
+          <span className='font-medium text-3xl'>돌아오신 것을 환영합니다</span>
+        </div>
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className='grid gap-3 mt-5 px-5'
+          className='grid gap-3 mt-12 w-full'
         >
+          <span>이메일 주소로 로그인 하세요.</span>
           <input
             ref={register({ required: 'Email is required.' })}
             className='input'
             name='email'
             type='email'
-            placeholder='Email'
+            placeholder='이메일'
             required
           />
           {errors.email?.message && (
@@ -78,14 +80,14 @@ export const Login = () => {
             className='input'
             name='password'
             type='password'
-            placeholder='Password'
+            placeholder='비밀번호'
             required
           />
           {errors.password?.message && (
             <FormError errorMessage={errors.password.message} />
           )}
-          <button className='mt-3 btn'>
-            {loading ? 'Loading...' : 'Log In'}
+          <button className='btn'>
+            {loading ? '로딩중 입니다...' : '로그인'}
           </button>
           {loginMutationResult?.login.error && (
             <FormError errorMessage={loginMutationResult.login.error} />
