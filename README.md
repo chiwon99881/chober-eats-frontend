@@ -120,3 +120,13 @@ npm i --save-dev @types/react-helmet
 - #21 Redirect or 404 Page
 
 - #22 Header 1
+
+- #23 Header 2
+
+  > Concept: make hooks
+
+```bash
+
+npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
+
+```
