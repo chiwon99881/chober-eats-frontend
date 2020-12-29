@@ -97,7 +97,7 @@ npm i apollo
 
 ```bash
 
-npm i react-helmet
+npm i react-helmet-async
 
 npm i --save-dev @types/react-helmet
 
@@ -106,3 +106,9 @@ npm i --save-dev @types/react-helmet
 - #18 Create Account Mutation 2
 
   > New concept: useHistory
+
+- #19 Save Token
+
+  > tiny bug: react-helmet
+
+  > fixed: react-helmet-async
