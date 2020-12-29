@@ -112,3 +112,7 @@ npm i --save-dev @types/react-helmet
   > tiny bug: react-helmet
 
   > fixed: react-helmet-async
+
+- #20 Using Token
+
+  > New concept: link, concat
