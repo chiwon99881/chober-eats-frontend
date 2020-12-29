@@ -116,3 +116,5 @@ npm i --save-dev @types/react-helmet
 - #20 Using Token
 
   > New concept: link, concat
+
+- #21 Redirect or 404 Page

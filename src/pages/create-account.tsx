@@ -45,7 +45,7 @@ export const CreateAccount = () => {
     } = data;
     if (ok) {
       alert('계정 생성이 완료되었습니다! 로그인 하세요.');
-      history.push('/login');
+      history.push('/');
     }
   };
   const [
@@ -137,7 +137,7 @@ export const CreateAccount = () => {
         </form>
         <div className='mt-3'>
           이미 계정이 있으신가요?{' '}
-          <Link to='/login' className='text-lime-700 font-medium'>
+          <Link to='/' className='text-lime-700 font-medium'>
             로그인 하기
           </Link>
         </div>

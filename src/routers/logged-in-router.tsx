@@ -1,6 +1,20 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom';
 import { me } from '../__generated__/me';
+import { UserRole } from '../__generated__/globalTypes';
+import { Restaurants } from '../pages/client/restaurants';
+
+const ClientRoutes = [
+  <Route path='/' exact key='redirect'>
+    <Restaurants />
+  </Route>,
+];
 
 const ME = gql`
   query me {
@@ -25,9 +39,12 @@ export const LoggedInRouter = () => {
     );
   } else {
     return (
-      <div>
-        <h1>{data.me.role}</h1>
-      </div>
+      <Router>
+        <Switch>
+          {data.me.role === UserRole.Client && ClientRoutes}
+          <Redirect to='/' />
+        </Switch>
+      </Router>
     );
   }
 };
