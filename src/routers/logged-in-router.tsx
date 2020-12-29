@@ -1,17 +1,14 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client';
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { me } from '../__generated__/me';
 import { UserRole } from '../__generated__/globalTypes';
 import { Restaurants } from '../pages/client/restaurants';
+import { NotFound } from '../pages/404';
+import { Header } from '../components/header';
 
 const ClientRoutes = [
-  <Route path='/' exact key='redirect'>
+  <Route path='/' key='restaurants' exact>
     <Restaurants />
   </Route>,
 ];
@@ -40,9 +37,12 @@ export const LoggedInRouter = () => {
   } else {
     return (
       <Router>
+        <Header />
         <Switch>
           {data.me.role === UserRole.Client && ClientRoutes}
-          <Redirect to='/' />
+          <Route>
+            <NotFound />
+          </Route>
         </Switch>
       </Router>
     );
