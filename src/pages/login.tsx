@@ -3,6 +3,7 @@ import React from 'react';
 import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { isLoggedInVar } from '../apollo';
 import { Button } from '../components/button';
 import { FormError } from '../components/form-error';
 import uberlogo from '../images/logo.svg';
@@ -40,6 +41,7 @@ export const Login = () => {
     } = data;
     if (ok) {
       console.log(token);
+      isLoggedInVar(true);
     } else {
       console.log(error);
     }
@@ -77,7 +79,11 @@ export const Login = () => {
         >
           <span>이메일 주소로 로그인 하세요.</span>
           <input
-            ref={register({ required: 'Email is required.' })}
+            ref={register({
+              required: 'Email is required.',
+              // eslint-disable-next-line
+              pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            })}
             className='input'
             name='email'
             type='email'
@@ -86,6 +92,9 @@ export const Login = () => {
           />
           {errors.email?.message && (
             <FormError errorMessage={errors.email.message} />
+          )}
+          {errors.email?.type === 'pattern' && (
+            <FormError errorMessage={'이메일 형식이 올바르지 않습니다.'} />
           )}
           <input
             ref={register({ required: 'Password is required.' })}

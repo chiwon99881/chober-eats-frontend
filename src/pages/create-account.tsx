@@ -2,10 +2,14 @@ import { gql, useMutation } from '@apollo/client';
 import React from 'react';
 import Helmet from 'react-helmet';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Button } from '../components/button';
 import { FormError } from '../components/form-error';
 import uberlogo from '../images/logo.svg';
+import {
+  createAccountMutation,
+  createAccountMutationVariables,
+} from '../__generated__/createAccountMutation';
 import { UserRole } from '../__generated__/globalTypes';
 
 const CREATE_ACCOUNT_MUTATION = gql`
@@ -27,7 +31,6 @@ export const CreateAccount = () => {
   const {
     register,
     getValues,
-    watch,
     handleSubmit,
     errors,
     formState,
@@ -35,10 +38,36 @@ export const CreateAccount = () => {
     mode: 'onChange',
     defaultValues: { role: UserRole.Client },
   });
-
-  const [createAccountMutation] = useMutation(CREATE_ACCOUNT_MUTATION);
-  const onSubmit = () => {};
-  console.log(watch());
+  const history = useHistory();
+  const onCompleted = (data: createAccountMutation) => {
+    const {
+      createAccount: { ok },
+    } = data;
+    if (ok) {
+      history.push('/login');
+    }
+  };
+  const [
+    createAccountMutation,
+    { loading, data: createAccountMutationResult },
+  ] = useMutation<createAccountMutation, createAccountMutationVariables>(
+    CREATE_ACCOUNT_MUTATION,
+    { onCompleted },
+  );
+  const onSubmit = () => {
+    const { email, password, role } = getValues();
+    if (!loading) {
+      createAccountMutation({
+        variables: {
+          createAccountInput: {
+            email,
+            password,
+            role,
+          },
+        },
+      });
+    }
+  };
   return (
     <div className='h-screen flex flex-col items-center mt-10 lg:mt-20'>
       <Helmet>
@@ -55,7 +84,11 @@ export const CreateAccount = () => {
         >
           <span>아래 내용을 입력해 주세요.</span>
           <input
-            ref={register({ required: 'Email is required.' })}
+            ref={register({
+              required: '이메일은 필수항목 입니다.',
+              // eslint-disable-next-line
+              pattern: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            })}
             className='input'
             name='email'
             type='email'
@@ -65,8 +98,11 @@ export const CreateAccount = () => {
           {errors.email?.message && (
             <FormError errorMessage={errors.email.message} />
           )}
+          {errors.email?.type === 'pattern' && (
+            <FormError errorMessage={'이메일 형식이 올바르지 않습니다.'} />
+          )}
           <input
-            ref={register({ required: 'Password is required.' })}
+            ref={register({ required: '패스워드는 필수항목 입니다.' })}
             className='input'
             name='password'
             type='password'
@@ -87,13 +123,20 @@ export const CreateAccount = () => {
           </select>
           <Button
             canClick={formState.isValid}
-            loading={false}
+            loading={loading}
             actionText={'회원 가입'}
           />
+          <div className='flex w-full justify-center'>
+            {createAccountMutationResult?.createAccount.error && (
+              <FormError
+                errorMessage={createAccountMutationResult.createAccount.error}
+              />
+            )}
+          </div>
         </form>
         <div className='mt-3'>
           이미 계정이 있으신가요?{' '}
-          <Link to='/' className='text-lime-700 font-medium'>
+          <Link to='/login' className='text-lime-700 font-medium'>
             로그인 하기
           </Link>
         </div>
