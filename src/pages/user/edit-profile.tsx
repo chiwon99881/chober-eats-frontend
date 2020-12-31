@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../components/button';
@@ -23,11 +23,37 @@ const EDIT_PROFILE_MUTATION = gql`
 `;
 
 export const EditProfile = () => {
-  const { data: meData } = useMe();
-  const onCompleted = (data: editProfile) => {
+  const { data: meData, refetch } = useMe();
+  const client = useApolloClient();
+  const onCompleted = async (data: editProfile) => {
     const {
       editProfile: { ok },
     } = data;
+    if (ok && meData) {
+      // 1. writeFragment for cache update
+      //   const {
+      //     me: { email: prevEmail, id },
+      //   } = meData;
+      //   const { email: newEmail } = getValues();
+      //   if (prevEmail !== newEmail) {
+      //     client.writeFragment({
+      //       id: `User:${id}`,
+      //       fragment: gql`
+      //         fragment EditProfile on User {
+      //           email
+      //           verified
+      //         }
+      //       `,
+      //       data: {
+      //         email: newEmail,
+      //         verified: false,
+      //       },
+      //     });
+      //   }
+
+      // 2. refetch function for cache update.
+      await refetch();
+    }
   };
   const [editProfileMutation, { loading }] = useMutation<
     editProfile,

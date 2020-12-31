@@ -138,3 +138,9 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #26 Edit Profile 1
 
 - #27 Edit Profile 2
+
+- #28 writeFragment vs Refetch function
+
+  > Fragment or Refetch function
+
+  > 최적화를 위해서는 Fragment를 사용하는것이 좋을 것 백엔드에게로 API 호출이 없으니
