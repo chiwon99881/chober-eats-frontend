@@ -30,13 +30,13 @@ export const Header: React.FC = () => {
       ) : (
         ''
       )}
-      <header className='py-4'>
-        <div className='w-full px-5 2xl:px-0 max-w-screen-xl mx-auto flex justify-between items-center'>
+      <header className='py-4 border border-gray-300'>
+        <div className='w-full px-5 2xl:px-0 max-w-screen-xl mx-auto flex justify-between items-center '>
           <Link to='/'>
             <img src={uberlogo} alt='logo' />
           </Link>
           <span className='text-base'>
-            <Link to='/my-profile'>
+            <Link to='/edit-profile'>
               <FontAwesomeIcon icon={faUser} className='text-2xl' />
             </Link>
           </span>

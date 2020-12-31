@@ -7,6 +7,7 @@ import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
 import { Loading } from '../components/loading';
 import { VerifyEmail } from '../pages/user/verify-email';
+import { EditProfile } from '../pages/user/edit-profile';
 
 const ClientRoutes = [
   <Route path='/' key='restaurants' exact>
@@ -14,6 +15,9 @@ const ClientRoutes = [
   </Route>,
   <Route path='/verify-email' key='verify-email' exact>
     <VerifyEmail />
+  </Route>,
+  <Route path='/edit-profile' key='edit-profile' exact>
+    <EditProfile />
   </Route>,
 ];
 
