@@ -12,6 +12,9 @@ const ClientRoutes = [
   <Route path='/' key='restaurants' exact>
     <Restaurants />
   </Route>,
+  <Route path='/verify-email' key='verify-email' exact>
+    <VerifyEmail />
+  </Route>,
 ];
 
 export const LoggedInRouter = () => {
@@ -24,9 +27,6 @@ export const LoggedInRouter = () => {
         <Header />
         <Switch>
           {data.me.role === UserRole.Client && ClientRoutes}
-          <Route path='/verify-email' exact>
-            <VerifyEmail />
-          </Route>
           <Route>
             <NotFound />
           </Route>

@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
@@ -20,14 +20,26 @@ const VERIFY_EMAIL = gql`
 `;
 
 export const VerifyEmail = () => {
-  const { data } = useMe();
+  const client = useApolloClient();
+  const { data: meData } = useMe();
   const history = useHistory();
   const onCompleted = (data: verifyEmail) => {
     const {
       verifyEmail: { ok, error },
     } = data;
-    if (ok) {
+    if (ok && meData?.me.id) {
       alert('Email verified.');
+      client.writeFragment({
+        id: `User:${meData?.me.id}`,
+        fragment: gql`
+          fragment VerifiedUser on User {
+            verified
+          }
+        `,
+        data: {
+          verified: true,
+        },
+      });
       history.push('/');
     } else {
       console.log(error);
@@ -55,7 +67,7 @@ export const VerifyEmail = () => {
     }
   };
 
-  if (data?.me.verified) {
+  if (meData?.me.verified) {
     return <Redirect to='/' />;
   } else {
     return (
