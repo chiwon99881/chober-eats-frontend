@@ -130,3 +130,5 @@ npm i --save-dev @types/react-helmet
 npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons @fortawesome/react-fontawesome
 
 ```
+
+- #24 Email Verify

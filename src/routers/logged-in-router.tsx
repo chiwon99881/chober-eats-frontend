@@ -6,6 +6,7 @@ import { NotFound } from '../pages/404';
 import { Header } from '../components/header';
 import { useMe } from '../hooks/useMe';
 import { Loading } from '../components/loading';
+import { VerifyEmail } from '../pages/user/verify-email';
 
 const ClientRoutes = [
   <Route path='/' key='restaurants' exact>
@@ -23,6 +24,9 @@ export const LoggedInRouter = () => {
         <Header />
         <Switch>
           {data.me.role === UserRole.Client && ClientRoutes}
+          <Route path='/verify-email' exact>
+            <VerifyEmail />
+          </Route>
           <Route>
             <NotFound />
           </Route>

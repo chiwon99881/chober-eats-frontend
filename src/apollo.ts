@@ -10,6 +10,7 @@ import { LOCALSTORAGE_TOKEN } from './constants';
 const token = localStorage.getItem(LOCALSTORAGE_TOKEN);
 
 export const isLoggedInVar = makeVar(Boolean(token));
+export const isVerifyPage = makeVar(false);
 export const authToken = makeVar(token);
 
 const httpLink = createHttpLink({
@@ -35,6 +36,11 @@ export const client = new ApolloClient({
           isLoggedIn: {
             read() {
               return isLoggedInVar();
+            },
+          },
+          isVerifyPage: {
+            read() {
+              return isVerifyPage();
             },
           },
           token: {
