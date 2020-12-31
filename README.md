@@ -136,3 +136,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #25 Write Cache, Fragment
 
 - #26 Edit Profile 1
+
+- #27 Edit Profile 2

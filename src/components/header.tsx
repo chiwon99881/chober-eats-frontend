@@ -2,7 +2,7 @@ import { useReactiveVar } from '@apollo/client';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { isVerifyPage } from '../apollo';
 import { useMe } from '../hooks/useMe';
 import uberlogo from '../images/logo.svg';
