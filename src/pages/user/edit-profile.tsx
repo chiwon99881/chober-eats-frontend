@@ -1,12 +1,13 @@
 import { gql, useApolloClient, useMutation } from '@apollo/client';
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../components/button';
 import { useMe } from '../../hooks/useMe';
 import {
-  editProfile,
-  editProfileVariables,
-} from '../../__generated__/editProfile';
+  editProfileMutation,
+  editProfileMutationVariables,
+} from '../../__generated__/editProfileMutation';
 
 interface IFormProps {
   email?: string;
@@ -14,7 +15,7 @@ interface IFormProps {
 }
 
 const EDIT_PROFILE_MUTATION = gql`
-  mutation editProfile($input: EditProfileInput!) {
+  mutation editProfileMutation($input: EditProfileInput!) {
     editProfile(input: $input) {
       ok
       error
@@ -23,41 +24,37 @@ const EDIT_PROFILE_MUTATION = gql`
 `;
 
 export const EditProfile = () => {
-  const { data: meData, refetch } = useMe();
+  const { data: meData } = useMe();
   const client = useApolloClient();
-  const onCompleted = async (data: editProfile) => {
+  const onCompleted = (data: editProfileMutation) => {
     const {
       editProfile: { ok },
     } = data;
     if (ok && meData) {
-      // 1. writeFragment for cache update
-      //   const {
-      //     me: { email: prevEmail, id },
-      //   } = meData;
-      //   const { email: newEmail } = getValues();
-      //   if (prevEmail !== newEmail) {
-      //     client.writeFragment({
-      //       id: `User:${id}`,
-      //       fragment: gql`
-      //         fragment EditProfile on User {
-      //           email
-      //           verified
-      //         }
-      //       `,
-      //       data: {
-      //         email: newEmail,
-      //         verified: false,
-      //       },
-      //     });
-      //   }
-
-      // 2. refetch function for cache update.
-      await refetch();
+      const {
+        me: { email: prevEmail, id },
+      } = meData;
+      const { email: newEmail } = getValues();
+      if (prevEmail !== newEmail) {
+        client.writeFragment({
+          id: `User:${id}`,
+          fragment: gql`
+            fragment EditProfile on User {
+              email
+              verified
+            }
+          `,
+          data: {
+            email: newEmail,
+            verified: false,
+          },
+        });
+      }
     }
   };
-  const [editProfileMutation, { loading }] = useMutation<
-    editProfile,
-    editProfileVariables
+  const [editProfile, { loading }] = useMutation<
+    editProfileMutation,
+    editProfileMutationVariables
   >(EDIT_PROFILE_MUTATION, { onCompleted });
   const { register, handleSubmit, getValues, formState } = useForm<IFormProps>({
     defaultValues: {
@@ -67,7 +64,7 @@ export const EditProfile = () => {
   });
   const onSubmit = () => {
     const { email, password } = getValues();
-    editProfileMutation({
+    editProfile({
       variables: {
         input: {
           ...(email !== '' && { email }),
@@ -79,6 +76,9 @@ export const EditProfile = () => {
 
   return (
     <div className='mt-28 flex flex-col justify-center items-center'>
+      <Helmet>
+        <title>Edit Profile | Chober-Eats</title>
+      </Helmet>
       <h4 className='font-semibold text-2xl mb-6'>프로필 수정</h4>
       <form
         onSubmit={handleSubmit(onSubmit)}

@@ -1,5 +1,6 @@
 import { gql, useApolloClient, useMutation } from '@apollo/client';
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Redirect, useHistory } from 'react-router-dom';
 import { Button } from '../../components/button';
@@ -72,6 +73,9 @@ export const VerifyEmail = () => {
   } else {
     return (
       <div className='h-screen py-10'>
+        <Helmet>
+          <title>Verify Email | Chober-Eats</title>
+        </Helmet>
         <div className='w-full max-w-screen-xl mx-auto px-5 2xl:px-0'>
           <form
             onSubmit={handleSubmit(onSubmit)}

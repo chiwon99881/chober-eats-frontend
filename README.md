@@ -144,3 +144,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > Fragment or Refetch function
 
   > 최적화를 위해서는 Fragment를 사용하는것이 좋을 것 백엔드에게로 API 호출이 없으니
+
+- #29 Restaurants Page
