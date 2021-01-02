@@ -148,3 +148,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #29 Restaurants Page
 
 - #30 Restaurants Page Style
+
+- #31 Restaurants Page Style 2

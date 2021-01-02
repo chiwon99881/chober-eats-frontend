@@ -53,7 +53,7 @@ export const Restaurants = () => {
   return (
     <div>
       <form
-        className='w-full py-40 flex flex-col items-center justify-center bg-cover'
+        className='w-full py-40 flex flex-col items-center justify-center bg-cover bg-center'
         style={{
           backgroundImage: `url(https://mir-s3-cdn-cf.behance.net/project_modules/1400/37d1c792897985.5e584e035a037.png)`,
         }}
@@ -73,10 +73,24 @@ export const Restaurants = () => {
             {data?.allCategories.categories.map((category) => (
               <div className='flex flex-col items-center justify-center cursor-pointer'>
                 <div
-                  className='bg-cover circle-lg'
+                  className='bg-cover circle-lg bg-center'
                   style={{ backgroundImage: `url(${category.coverImage})` }}
                 ></div>
                 <span className='font-medium mt-3'>{category.name}</span>
+              </div>
+            ))}
+          </div>
+          <div className='grid grid-cols-3 gap-x-5 gap-y-10 mt-10'>
+            {data.allRestaurants.results?.map((restaurant) => (
+              <div className='w-full'>
+                <div
+                  style={{ backgroundImage: `url(${restaurant.coverImage})` }}
+                  className='bg-center bg-cover py-32 mb-3'
+                ></div>
+                <h3 className='font-medium text-lg'>{restaurant.name}</h3>
+                <span className='block border-t border-gray-200 w-full mt-2 pt-1'>
+                  {restaurant.category?.name}
+                </span>
               </div>
             ))}
           </div>
