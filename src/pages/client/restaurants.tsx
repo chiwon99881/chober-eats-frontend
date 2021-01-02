@@ -2,6 +2,8 @@ import { gql, useQuery } from '@apollo/client';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router-dom';
 import { Restaurant } from '../../components/restaurant';
 import {
   restaurantsPageQuery,
@@ -40,6 +42,10 @@ const RESTAURANTS_QUERY = gql`
   }
 `;
 
+interface IFormProps {
+  searchTerm: string;
+}
+
 export const Restaurants = () => {
   const [page, setPage] = useState(1);
   const { data, loading } = useQuery<
@@ -54,9 +60,19 @@ export const Restaurants = () => {
   });
   const onNextPageClick = () => setPage((current) => current + 1);
   const onPrevPageClick = () => setPage((current) => current - 1);
+  const { register, handleSubmit, getValues } = useForm<IFormProps>();
+  const history = useHistory();
+  const onSearchSubmit = () => {
+    const { searchTerm } = getValues();
+    history.push({
+      pathname: '/search',
+      search: `?term=${searchTerm}`,
+    });
+  };
   return (
     <div>
       <form
+        onSubmit={handleSubmit(onSearchSubmit)}
         className='w-full py-40 flex flex-col items-center justify-center bg-cover bg-center'
         style={{
           backgroundImage: `url(https://mir-s3-cdn-cf.behance.net/project_modules/1400/37d1c792897985.5e584e035a037.png)`,
@@ -66,6 +82,8 @@ export const Restaurants = () => {
           Hungry? You're in the right place
         </span>
         <input
+          ref={register({ required: true, min: 2 })}
+          name='searchTerm'
           type='Search'
           placeholder='🍙 Enter Food'
           className='input w-3/6 border-0'
@@ -87,7 +105,7 @@ export const Restaurants = () => {
               </div>
             ))}
           </div>
-          <div className='grid grid-cols-3 gap-x-5 gap-y-10 mt-16'>
+          <div className='grid lg:grid-cols-3 gap-x-5 gap-y-10 mt-16'>
             {data?.allRestaurants.results?.map((restaurant, index) => (
               <Restaurant
                 key={index}
