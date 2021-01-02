@@ -154,3 +154,9 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #32 Restaurants Page Pagination
 
 - #33 Search Page 1
+
+  > New concept: history.push({pathname, state, search})
+
+- #34 Search Page 2
+
+  > New concept: Lazy Query
