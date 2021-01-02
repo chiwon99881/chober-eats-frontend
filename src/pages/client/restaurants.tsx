@@ -1,5 +1,8 @@
 import { gql, useQuery } from '@apollo/client';
-import React from 'react';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useState } from 'react';
+import { Restaurant } from '../../components/restaurant';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -38,18 +41,19 @@ const RESTAURANTS_QUERY = gql`
 `;
 
 export const Restaurants = () => {
-  const { data, loading, error } = useQuery<
+  const [page, setPage] = useState(1);
+  const { data, loading } = useQuery<
     restaurantsPageQuery,
     restaurantsPageQueryVariables
   >(RESTAURANTS_QUERY, {
     variables: {
       input: {
-        page: 1,
+        page,
       },
     },
   });
-  console.log(data);
-
+  const onNextPageClick = () => setPage((current) => current + 1);
+  const onPrevPageClick = () => setPage((current) => current - 1);
   return (
     <div>
       <form
@@ -67,11 +71,14 @@ export const Restaurants = () => {
           className='input w-3/6 border-0'
         />
       </form>
-      {!loading && data?.allCategories.categories && (
-        <div className='max-w-screen-xl mx-auto mt-8'>
+      {!loading && (
+        <div className='max-w-screen-xl mx-auto mt-8 pb-24'>
           <div className='flex justify-around max-w-xl'>
-            {data?.allCategories.categories.map((category) => (
-              <div className='flex flex-col items-center justify-center cursor-pointer'>
+            {data?.allCategories.categories?.map((category, index) => (
+              <div
+                key={index}
+                className='flex flex-col items-center justify-center cursor-pointer'
+              >
                 <div
                   className='bg-cover circle-lg bg-center'
                   style={{ backgroundImage: `url(${category.coverImage})` }}
@@ -80,22 +87,38 @@ export const Restaurants = () => {
               </div>
             ))}
           </div>
-          <div className='grid grid-cols-3 gap-x-5 gap-y-10 mt-10'>
-            {data.allRestaurants.results?.map((restaurant) => (
-              <div className='w-full'>
-                <div
-                  style={{ backgroundImage: `url(${restaurant.coverImage})` }}
-                  className='bg-center bg-cover py-32 mb-3'
-                ></div>
-                <h3 className='font-medium text-lg'>{restaurant.name}</h3>
-                <span className='block border-t border-gray-200 w-full mt-2 pt-1'>
-                  {restaurant.category?.name}
-                </span>
-              </div>
+          <div className='grid grid-cols-3 gap-x-5 gap-y-10 mt-16'>
+            {data?.allRestaurants.results?.map((restaurant, index) => (
+              <Restaurant
+                key={index}
+                id={restaurant.id}
+                categoryName={restaurant.category?.name}
+                coverImg={restaurant.coverImage}
+                restaurantName={restaurant.name}
+              />
             ))}
           </div>
         </div>
       )}
+      <div className='flex justify-center items-center '>
+        {page > 1 && (
+          <FontAwesomeIcon
+            icon={faAngleLeft}
+            className='font-bold text-3xl cursor-pointer'
+            onClick={onPrevPageClick}
+          />
+        )}
+        <span className='mx-3'>
+          Page {page} of {data?.allRestaurants.totalPages}
+        </span>
+        {page !== data?.allRestaurants.totalPages && (
+          <FontAwesomeIcon
+            icon={faAngleRight}
+            className='font-bold text-3xl cursor-pointer'
+            onClick={onNextPageClick}
+          />
+        )}
+      </div>
     </div>
   );
 };

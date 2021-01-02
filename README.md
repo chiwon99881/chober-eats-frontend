@@ -150,3 +150,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #30 Restaurants Page Style
 
 - #31 Restaurants Page Style 2
+
+- #32 Restaurants Page Pagination
