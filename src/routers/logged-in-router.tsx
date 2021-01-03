@@ -9,6 +9,7 @@ import { Loading } from '../components/loading';
 import { VerifyEmail } from '../pages/user/verify-email';
 import { EditProfile } from '../pages/user/edit-profile';
 import { Search } from '../pages/client/search';
+import { Category } from '../pages/client/category';
 
 const ClientRoutes = [
   <Route path='/' key='restaurants' exact>
@@ -22,6 +23,9 @@ const ClientRoutes = [
   </Route>,
   <Route path='/search' key='search' exact>
     <Search />
+  </Route>,
+  <Route path='/category/:slug' key='category' exact>
+    <Category />
   </Route>,
 ];
 

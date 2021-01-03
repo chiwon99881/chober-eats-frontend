@@ -4,9 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { Restaurant } from '../../components/restaurant';
-import { RESTAURANT_FRAGMENT } from '../../fragments';
+import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   restaurantsPageQuery,
   restaurantsPageQueryVariables,
@@ -18,11 +18,7 @@ const RESTAURANTS_QUERY = gql`
       ok
       error
       categories {
-        id
-        name
-        coverImage
-        slug
-        restaurantCount
+        ...CategoryFragment
       }
     }
     allRestaurants(input: $input) {
@@ -36,6 +32,7 @@ const RESTAURANTS_QUERY = gql`
     }
   }
   ${RESTAURANT_FRAGMENT}
+  ${CATEGORY_FRAGMENT}
 `;
 
 interface IFormProps {
@@ -92,16 +89,15 @@ export const Restaurants = () => {
         <div className='max-w-screen-xl mx-auto mt-8 pb-24'>
           <div className='flex justify-around max-w-xl'>
             {data?.allCategories.categories?.map((category, index) => (
-              <div
-                key={index}
-                className='flex flex-col items-center justify-center cursor-pointer'
-              >
-                <div
-                  className='bg-cover circle-lg bg-center'
-                  style={{ backgroundImage: `url(${category.coverImage})` }}
-                ></div>
-                <span className='font-medium mt-3'>{category.name}</span>
-              </div>
+              <Link to={`/category/${category.slug}`} key={index}>
+                <div className='flex flex-col items-center justify-center cursor-pointer'>
+                  <div
+                    className='bg-cover circle-lg bg-center'
+                    style={{ backgroundImage: `url(${category.coverImage})` }}
+                  ></div>
+                  <span className='font-medium mt-3'>{category.name}</span>
+                </div>
+              </Link>
             ))}
           </div>
           <div className='grid lg:grid-cols-3 gap-x-5 gap-y-10 mt-16'>
