@@ -170,3 +170,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #37 Search Page
 
 - #38 Restaurant Detail Page
+
+- #39 Restaurant Detail Page 2
