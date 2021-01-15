@@ -2,6 +2,8 @@ import { gql, useLazyQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useHistory, useLocation } from 'react-router-dom';
+import { Loading } from '../../components/loading';
+import { SearchForm } from '../../components/search-form';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   searchRestaurants,
@@ -47,13 +49,17 @@ export const Search = () => {
       },
     });
     console.log(data, loading);
-  }, [history, location, data, loading]);
-  return (
-    <h1>
-      <Helmet>
-        <title>Search | Chober-Eats</title>
-      </Helmet>
-      Search Page
-    </h1>
-  );
+  }, [history, location, data, loading, queryReadyToStart]);
+  if (loading) {
+    return <Loading />;
+  } else {
+    return (
+      <div>
+        <Helmet>
+          <title>Search | Chober-Eats</title>
+        </Helmet>
+        <SearchForm />
+      </div>
+    );
+  }
 };

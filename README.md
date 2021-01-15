@@ -164,3 +164,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #35 Category
 
   > New concept: useParams()
+
+- #36 Category Page
