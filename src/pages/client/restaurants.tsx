@@ -35,10 +35,6 @@ const RESTAURANTS_QUERY = gql`
   ${CATEGORY_FRAGMENT}
 `;
 
-interface IFormProps {
-  searchTerm: string;
-}
-
 export const Restaurants = () => {
   const [page, setPage] = useState(1);
   const { data, loading } = useQuery<
