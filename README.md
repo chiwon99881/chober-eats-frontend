@@ -177,10 +177,12 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 
   > jest
 
-- #41 App Test
+- #41 App Component Test
 
   > mock, waitFor
 
-- #42 Button Test
+- #42 Button Component Test
 
   > container, rerender
+
+- #43 FormError, Restaurant Component Test
