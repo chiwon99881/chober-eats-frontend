@@ -186,3 +186,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > container, rerender
 
 - #43 FormError, Restaurant Component Test
+
+- #44 Header, 404 Component Test
+
+  > MockedProvider, queryByText
