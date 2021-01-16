@@ -176,3 +176,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #40 Test Settings
 
   > jest
+
+- #41 App Test
+
+  > mock, waitFor
