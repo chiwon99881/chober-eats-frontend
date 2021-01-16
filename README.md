@@ -180,3 +180,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #41 App Test
 
   > mock, waitFor
+
+- #42 Button Test
+
+  > container, rerender
