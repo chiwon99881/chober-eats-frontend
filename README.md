@@ -197,8 +197,13 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   npm i mock-apollo-client --save-dev
   ```
 
+  > mock-apollo-client 를 사용하는 이유는 mutation의 경우 입력값도 제대로 들어가는지 확인하고 싶어서
+  > 그냥 mockapolloprovider 쓰면 그것이 불가능하기 때문에
+
   > userEvent, createMockClient
 
 - #46 Login Component Test 2
 
   > mockResolvedValue
+
+- #47 Login Component Test 3

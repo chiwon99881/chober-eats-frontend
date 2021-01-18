@@ -77,6 +77,7 @@ describe('<Login />', () => {
       },
     });
     mockedClient.setRequestHandler(LOGIN_MUTATION, mockedMutationResponse);
+    jest.spyOn(Storage.prototype, 'setItem');
     await waitFor(() => {
       userEvent.type(email, formData.email);
       userEvent.type(password, formData.password);
@@ -88,5 +89,43 @@ describe('<Login />', () => {
         ...formData,
       },
     });
+    expect(localStorage.setItem).toHaveBeenLastCalledWith(
+      'chober-token',
+      'xxx',
+    );
+  });
+
+  it('mutation errors', async () => {
+    const { getByPlaceholderText, debug, getByRole } = renderResult;
+    const email = getByPlaceholderText('이메일');
+    const password = getByPlaceholderText('비밀번호');
+    const submitButton = getByRole('button');
+    const formData = {
+      email: 'real@test.com',
+      password: '123',
+    };
+    const mockedMutationResponse = jest.fn().mockResolvedValue({
+      data: {
+        login: {
+          ok: false,
+          token: null,
+          error: 'mutation-error',
+        },
+      },
+    });
+    mockedClient.setRequestHandler(LOGIN_MUTATION, mockedMutationResponse);
+    await waitFor(() => {
+      userEvent.type(email, formData.email);
+      userEvent.type(password, formData.password);
+      userEvent.click(submitButton);
+    });
+    expect(mockedMutationResponse).toHaveBeenCalledTimes(1);
+    expect(mockedMutationResponse).toHaveBeenCalledWith({
+      loginInput: {
+        ...formData,
+      },
+    });
+    let errorMessage = getByRole('alert');
+    expect(errorMessage).toHaveTextContent('mutation-error');
   });
 });
