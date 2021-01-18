@@ -1,6 +1,6 @@
 import { MockedProvider } from '@apollo/client/testing';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { render, waitFor } from '@testing-library/react';
+import { queryByText, render, waitFor } from '@testing-library/react';
 import React from 'react';
 import { ME } from '../../hooks/useMe';
 import { Header } from '../header';
@@ -29,7 +29,7 @@ describe('<Header />', () => {
   it('renders verify banner', async () => {
     await waitFor(async () => {
       isVerifyPage(false);
-      const { getByText, container } = render(
+      const { getByText, container, queryByText } = render(
         <MockedProvider
           mocks={[
             {
@@ -59,6 +59,8 @@ describe('<Header />', () => {
       expect(
         container.firstElementChild?.lastChild?.firstChild,
       ).toHaveAttribute('href', '/verify-email');
+      expect(container.firstElementChild?.lastChild?.firstChild).toBeEnabled();
+      getByText('이메일 인증하러 가기 →');
     });
   });
 

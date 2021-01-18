@@ -190,3 +190,11 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #44 Header, 404 Component Test
 
   > MockedProvider, queryByText
+
+- #45 Login Component Test 1
+
+  ```bash
+  npm i mock-apollo-client --save-dev
+  ```
+
+  > userEvent, createMockClient
