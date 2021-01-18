@@ -12,6 +12,7 @@ export const Button: React.FC<IButtonProps> = ({
   actionText,
 }) => (
   <button
+    role='button'
     className={`${
       canClick
         ? 'bg-lime-600 hover:bg-lime-700'

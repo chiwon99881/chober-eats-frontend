@@ -198,3 +198,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   ```
 
   > userEvent, createMockClient
+
+- #46 Login Component Test 2
+
+  > mockResolvedValue
