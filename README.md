@@ -207,3 +207,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > mockResolvedValue
 
 - #47 Login Component Test 3
+
+- #48 Test Setup
+
+  > test-utils.tsx
