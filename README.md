@@ -211,3 +211,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #48 Test Setup
 
   > test-utils.tsx
+
+- #49 Create Account Component Test
