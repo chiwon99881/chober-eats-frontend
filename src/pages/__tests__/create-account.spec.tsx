@@ -7,6 +7,20 @@ import { render, waitFor } from '../../test-utils';
 import { UserRole } from '../../__generated__/globalTypes';
 import { CreateAccount, CREATE_ACCOUNT_MUTATION } from '../create-account';
 
+const mockPush = jest.fn();
+
+jest.mock('react-router-dom', () => {
+  const realModule = jest.requireActual('react-router-dom');
+  return {
+    ...realModule,
+    useHistory: () => {
+      return {
+        push: mockPush,
+      };
+    },
+  };
+});
+
 describe('<CreateAccount />', () => {
   let mockedClient: MockApolloClient;
   let renderResult: RenderResult;
@@ -88,6 +102,10 @@ describe('<CreateAccount />', () => {
       '계정 생성이 완료되었습니다! 로그인 하세요.',
     );
     const errorMessage = getByRole('alert');
+    expect(mockPush).toHaveBeenCalledWith('/');
     expect(errorMessage).toHaveTextContent('if error has, this message');
+  });
+  afterAll(() => {
+    jest.clearAllMocks();
   });
 });
