@@ -252,3 +252,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > intercept 의 쓰임과 이유
 
 - #57 Custom Commands with Cypress
+
+- #58 Edit Profile E2E with Cypress 1
