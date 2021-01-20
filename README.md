@@ -233,3 +233,12 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 
   npx cypress open
   ```
+
+- #53 First E2E Test with Cypress
+
+  > @testing-library/cypress 이 아이는 element 요소들을 react-test-library처럼 가져올 수 있다 예를들면,
+  > getByText , getByPlaceholderText 등등..
+
+  ```bash
+  npm install @testing-library/cypress --save-dev
+  ```
