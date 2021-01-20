@@ -28,6 +28,8 @@ describe('Log In', () => {
   });
 
   it('can fill out the form and login', () => {
+    // @ts-ignore
+    // cy.login('cw.choiit2@gmail.com', '1234');
     cy.get('form').within(() => {
       cy.findByPlaceholderText('이메일')
         .type('cw.choiit2@gmail.com')

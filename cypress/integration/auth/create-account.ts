@@ -72,6 +72,7 @@ describe('Create Account', () => {
           .click();
       });
     cy.url().should('eq', Cypress.config().baseUrl + '/');
-    cy.window().its('localStorage.chober-token').should('be.a', 'string');
+    // @ts-ignore
+    cy.assertLoggedIn();
   });
 });
