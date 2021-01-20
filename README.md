@@ -242,3 +242,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   ```bash
   npm install @testing-library/cypress --save-dev
   ```
+
+- #54 Login E2E with Cypress
