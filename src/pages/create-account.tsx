@@ -114,6 +114,8 @@ export const CreateAccount = () => {
             <FormError errorMessage={errors.password.message} />
           )}
           <select
+            // eslint-disable-next-line
+            role='select'
             ref={register({ required: true })}
             name='role'
             className='input'

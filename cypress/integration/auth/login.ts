@@ -27,7 +27,7 @@ describe('Log In', () => {
     });
   });
 
-  it('can fill out the form', () => {
+  it('can fill out the form and login', () => {
     cy.get('form').within(() => {
       cy.findByPlaceholderText('이메일')
         .type('cw.choiit2@gmail.com')

@@ -244,3 +244,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   ```
 
 - #54 Login E2E with Cypress
+
+- #55 Create Account E2E with Cypress 1
