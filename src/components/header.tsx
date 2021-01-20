@@ -14,7 +14,11 @@ export const Header: React.FC = () => {
     <>
       {isVerifyPageValue === false ? (
         data?.me.verified === false ? (
-          <div className='bg-gray-400 py-5 px-3 flex flex-col items-center bg-opacity-70'>
+          <div
+            // eslint-disable-next-line
+            role='verify-popup'
+            className='bg-gray-400 py-5 px-3 flex flex-col items-center bg-opacity-70'
+          >
             <span className='font-medium text-sm text-white'>
               회원님, 이메일 인증을 해주세요.
             </span>
