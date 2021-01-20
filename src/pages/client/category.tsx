@@ -10,7 +10,7 @@ import { SearchForm } from '../../components/search-form';
 import { CATEGORY_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import { category, categoryVariables } from '../../__generated__/category';
 
-const CATEGORY_QUERY = gql`
+export const CATEGORY_QUERY = gql`
   query category($input: CategoryInput!) {
     category(input: $input) {
       ok
@@ -46,6 +46,7 @@ export const Category = () => {
       },
     },
   );
+  console.log(data);
   const onPrevPageClick = () => setPage((current) => current - 1);
   const onNextPageClick = () => setPage((current) => current + 1);
   if (loading) {

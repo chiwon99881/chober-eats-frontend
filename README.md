@@ -221,3 +221,15 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #51 SearchForm, Loading Component Test
 
   > enter key event test
+
+- #52 Cypress
+
+  > Cypress는 end-to-end 테스트를 해주게 하는 소프트웨어
+
+  > 자동화 테스트를 스크립트를 통해서 수행한다고 보면된다.
+
+  ```bash
+  npm install cypress
+
+  npx cypress open
+  ```

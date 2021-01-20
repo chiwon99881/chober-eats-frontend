@@ -11,6 +11,7 @@ export const Button: React.FC<IButtonProps> = ({
   loading,
   actionText,
 }) => (
+  // eslint-disable-next-line
   <button
     role='button'
     className={`${
