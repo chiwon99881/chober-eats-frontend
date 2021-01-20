@@ -246,3 +246,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #54 Login E2E with Cypress
 
 - #55 Create Account E2E with Cypress 1
+
+- #56 Create Account E2E with Cypress 2
+
+  > intercept 의 쓰임과 이유
