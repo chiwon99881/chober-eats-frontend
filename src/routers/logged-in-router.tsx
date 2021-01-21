@@ -12,6 +12,7 @@ import { Category } from '../pages/client/category';
 import { Restaurant } from '../pages/client/restaurant';
 import { Restaurants } from '../pages/client/restaurants';
 import { MyRestaurants } from '../pages/owner/my-restaurants';
+import { AddRestaurants } from '../pages/owner/add-restaurants';
 
 const clientRoutes = [
   {
@@ -32,7 +33,10 @@ const clientRoutes = [
   },
 ];
 
-const ownerRoutes = [{ path: '/', component: <MyRestaurants /> }];
+const ownerRoutes = [
+  { path: '/', component: <MyRestaurants /> },
+  { path: '/add-restaurants', component: <AddRestaurants /> },
+];
 
 const commonRoutes = [
   { path: '/verify-email', component: <VerifyEmail /> },

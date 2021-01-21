@@ -262,3 +262,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > fixture는 Template이라고 생각하면 된다. mock할 데이터 형식을 미리 만들어 두는 파일
 
 - #60 Owner Routes AND Recap
+
+- #61 Add Restaurants 1

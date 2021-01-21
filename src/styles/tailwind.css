@@ -23,4 +23,12 @@
     height: 120px;
 }
 
+.container {
+    @apply max-w-screen-xl mx-auto p-16;
+}
+
+.link {
+    @apply text-lime-500 hover:underline;
+}
+
 @tailwind utilities;
