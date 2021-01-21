@@ -264,3 +264,9 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #60 Owner Routes AND Recap
 
 - #61 Add Restaurants 1
+
+- #62 Add Restaurants 2
+
+  > Renew Loader CSS
+
+  > fetch to back-end for upload file and responsed file url

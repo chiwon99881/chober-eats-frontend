@@ -31,4 +31,13 @@
     @apply text-lime-500 hover:underline;
 }
 
+.loader {
+    animation: spinner 2s linear infinite;
+}
+
+@keyframes spinner {
+    0% {transform: rotate(0deg);}
+    100% {transform: rotate(360deg);}
+}
+
 @tailwind utilities;

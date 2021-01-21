@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { Button } from '../../components/button';
@@ -22,13 +22,22 @@ interface IFormProps {
   name: string;
   address: string;
   categoryName: string;
+  file: FileList;
 }
 
 export const AddRestaurants = () => {
-  const [createRestaurantMutation, { loading, data }] = useMutation<
+  const onCompleted = (data: createRestaurantMutation) => {
+    const {
+      createRestaurant: { ok, error },
+    } = data;
+    if (ok || error) {
+      setUploading(false);
+    }
+  };
+  const [createRestaurantMutation, { data }] = useMutation<
     createRestaurantMutation,
     createRestaurantMutationVariables
-  >(CREATE_RESTAURANT_MUTATION);
+  >(CREATE_RESTAURANT_MUTATION, { onCompleted });
   const {
     register,
     handleSubmit,
@@ -36,8 +45,34 @@ export const AddRestaurants = () => {
     formState,
     getValues,
   } = useForm<IFormProps>({ mode: 'onChange' });
-  const onSubmit = () => {
-    const { name, address, categoryName } = getValues();
+  const [uploading, setUploading] = useState(false);
+  const onSubmit = async () => {
+    try {
+      setUploading(true);
+      const { name, address, categoryName, file } = getValues();
+      const uploadFile = file[0];
+      const formBody = new FormData();
+      formBody.append('file', uploadFile);
+      const { url: coverImage } = await (
+        await fetch('http://localhost:4000/uploads', {
+          method: 'POST',
+          body: formBody,
+        })
+      ).json();
+      createRestaurantMutation({
+        variables: {
+          input: {
+            name,
+            address,
+            categoryName,
+            coverImage,
+          },
+        },
+      });
+    } catch (e) {
+      console.log(e);
+      setUploading(false);
+    }
   };
   return (
     <div className='container'>
@@ -46,7 +81,7 @@ export const AddRestaurants = () => {
       </Helmet>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className='grid gap-3 mt-12 border border-gray-300 w-full p-5 rounded'
+        className='grid gap-3 mt-12 w-full p-5'
       >
         <input
           ref={register({ required: '레스토랑 이름은 필수항목 입니다.' })}
@@ -78,11 +113,22 @@ export const AddRestaurants = () => {
         {errors.categoryName?.message && (
           <FormError errorMessage={errors.categoryName.message} />
         )}
+        <div>
+          <input
+            type='file'
+            name='file'
+            accept='image/*'
+            ref={register({ required: true })}
+          />
+        </div>
         <Button
           actionText={'추가하기'}
           canClick={formState.isValid}
-          loading={loading}
+          loading={uploading}
         />
+        {data?.createRestaurant.error && (
+          <FormError errorMessage={data.createRestaurant.error} />
+        )}
       </form>
     </div>
   );

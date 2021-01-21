@@ -1,4 +1,5 @@
 import React from 'react';
+import { Loader } from './loading';
 
 interface IButtonProps {
   canClick: boolean;
@@ -21,6 +22,6 @@ export const Button: React.FC<IButtonProps> = ({
     } 
     py-3 px-5 mt-3 text-white text-base rounded-lg focus:outline-none transition-colors`}
   >
-    {loading ? '로딩중 입니다...' : actionText}
+    {loading ? <Loader /> : actionText}
   </button>
 );
