@@ -256,3 +256,9 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #58 Edit Profile E2E with Cypress 1
 
 - #59 Intercept request data AND fixture
+
+  > request, response 모두 intercept가 가능하다.
+
+  > fixture는 Template이라고 생각하면 된다. mock할 데이터 형식을 미리 만들어 두는 파일
+
+- #60 Owner Routes AND Recap
