@@ -270,3 +270,8 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > Renew Loader CSS
 
   > fetch to back-end for upload file and responsed file url
+
+- #63 Write Cache
+
+  > 레스토랑을 새로 생성했을 때, 생성한 레스토랑이 바로 보여지게 하기위해
+  > API를 다시 Request하는게 아니라, Cache만 업데이트해서 애플리케이션을 최적화 하기위함

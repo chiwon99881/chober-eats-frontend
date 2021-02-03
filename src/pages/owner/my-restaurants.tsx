@@ -3,10 +3,11 @@ import React from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { Loading } from '../../components/loading';
+import { Restaurant } from '../../components/restaurant';
 import { RESTAURANT_FRAGMENT } from '../../fragments';
 import { myRestaurantsQuery } from '../../__generated__/myRestaurantsQuery';
 
-const MY_RESTAURANTS_QUERY = gql`
+export const MY_RESTAURANTS_QUERY = gql`
   query myRestaurantsQuery {
     myRestaurants {
       ok
@@ -47,6 +48,27 @@ export const MyRestaurants = () => {
                 </Link>
               </span>
             </div>
+          )}
+        {data?.myRestaurants.ok &&
+          data?.myRestaurants?.restaurants &&
+          data.myRestaurants.restaurants.length > 0 && (
+            <>
+              <span className='text-6xl font-semibold text-black'>
+                {`My ${data.myRestaurants.restaurants.length} Restaurants`}
+              </span>
+              <div className='border-t border-gray-300 my-8' />
+              <div className='grid lg:grid-cols-3 gap-x-5 gap-y-10 mb-24'>
+                {data?.myRestaurants?.restaurants?.map((restaurant, index) => (
+                  <Restaurant
+                    key={index}
+                    id={restaurant.id}
+                    categoryName={restaurant.category?.name}
+                    coverImg={restaurant.coverImage}
+                    restaurantName={restaurant.name}
+                  />
+                ))}
+              </div>
+            </>
           )}
       </div>
     );
