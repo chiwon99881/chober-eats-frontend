@@ -13,6 +13,7 @@ import { Restaurant } from '../pages/client/restaurant';
 import { Restaurants } from '../pages/client/restaurants';
 import { MyRestaurants } from '../pages/owner/my-restaurants';
 import { AddRestaurants } from '../pages/owner/add-restaurants';
+import { MyRestaurant } from '../pages/owner/my-restaurant';
 
 const clientRoutes = [
   {
@@ -36,6 +37,7 @@ const clientRoutes = [
 const ownerRoutes = [
   { path: '/', component: <MyRestaurants /> },
   { path: '/add-restaurants', component: <AddRestaurants /> },
+  { path: '/restaurant/:id', component: <MyRestaurant /> },
 ];
 
 const commonRoutes = [
