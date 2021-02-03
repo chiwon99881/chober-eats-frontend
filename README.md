@@ -277,3 +277,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > API를 다시 Request하는게 아니라, Cache만 업데이트해서 애플리케이션을 최적화 하기위함
 
 - #64 My Restaurant Dashboard for Owner
+
+- #65 My Restaurant Dashboard 2
+
+  > Create Dish Component
