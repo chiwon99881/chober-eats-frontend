@@ -1,5 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
 import React from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 import { Loading } from '../../components/loading';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
@@ -8,7 +9,7 @@ import {
   myRestaurantQueryVariables,
 } from '../../__generated__/myRestaurantQuery';
 
-const MY_RESTAURANT_QUERY = gql`
+export const MY_RESTAURANT_QUERY = gql`
   query myRestaurantQuery($input: MyRestaurantInput!) {
     myRestaurant(input: $input) {
       ok
@@ -41,6 +42,9 @@ export const MyRestaurant = () => {
   } else {
     return (
       <div className='w-full max-w-7xl h-screen border border-gray-900 mx-auto'>
+        <Helmet>
+          <title>My Restaurant | Chober-Eats</title>
+        </Helmet>
         <div
           className='w-full max-w-7xl h-2/5 bg-center bg-cover'
           style={{
@@ -52,7 +56,7 @@ export const MyRestaurant = () => {
             {data?.myRestaurant.restaurant?.name}
           </span>
           <div className='flex items-center mt-8'>
-            <Link to={`${params.id}/add-dish`} className='mr-8'>
+            <Link to={`/restaurant/${params.id}/add-dish`} className='mr-8'>
               <button className='p-3 bg-gray-700 text-white font-semibold rounded'>
                 음식 추가하기 &rarr;
               </button>
@@ -69,7 +73,13 @@ export const MyRestaurant = () => {
             <span className='text-3xl font-semibold mt-6 block'>
               레스토랑에 등록된 음식이 없습니다.
             </span>
-          ) : null}
+          ) : (
+            <div>
+              {data?.myRestaurant.restaurant?.menu?.map((menu, index) => (
+                <span key={index}>{menu.name}</span>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     );

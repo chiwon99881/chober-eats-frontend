@@ -281,3 +281,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #65 My Restaurant Dashboard 2
 
   > Create Dish Component
+
+- #66 My Restaurant Dashboard 3
+
+  > Create Dish Component 2
