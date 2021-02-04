@@ -291,3 +291,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > 음식 메뉴의 여러 옵션을 frontend 에서 생성하기 위해
 
 - #68 Dish Options 2
+
+- #69 Dish Component
