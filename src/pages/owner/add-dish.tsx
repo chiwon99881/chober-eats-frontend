@@ -28,6 +28,7 @@ interface IFormProps {
   name: string;
   price: string;
   description: string;
+  [key: string]: string;
 }
 
 export const AddDish = () => {
@@ -56,30 +57,31 @@ export const AddDish = () => {
   });
   const onSubmit = () => {
     const { name, description, price, ...rest } = getValues();
-    console.log(rest);
-    // createDishMutation({
-    //   variables: {
-    //     input: {
-    //       restaurantId: +restaurantId,
-    //       name,
-    //       price: +price,
-    //       description,
-    //     },
-    //   },
-    // });
-    // history.goBack();
+    const options = optionsNumber.map((theId) => ({
+      name: rest[`${theId}-optionName`],
+      extra: +rest[`${theId}-optionExtraPrice`],
+    }));
+    createDishMutation({
+      variables: {
+        input: {
+          restaurantId: +restaurantId,
+          name,
+          price: +price,
+          description,
+          options,
+        },
+      },
+    });
+    history.goBack();
   };
-  const [optionsNumber, setOptionsNumber] = useState(0);
+  const [optionsNumber, setOptionsNumber] = useState<number[]>([]);
   const onAddOptionClick = () => {
-    setOptionsNumber((current) => current + 1);
-    console.log(optionsNumber);
+    setOptionsNumber((current) => [Date.now(), ...current]);
   };
   const onDeleteOptionClick = (toDeleteId: number) => {
-    setOptionsNumber((current) => current - 1);
-    // @ts-ignore
-    setValue(`${toDeleteId}-optionName`, '');
-    // @ts-ignore
-    setValue(`${toDeleteId}-optionExtraPrice`, '');
+    setOptionsNumber((current) => current.filter((id) => id !== toDeleteId));
+    setValue(`${toDeleteId}-optionName`, null);
+    setValue(`${toDeleteId}-optionExtraPrice`, null);
   };
   return (
     <div className='w-full max-w-7xl flex flex-col items-center mx-auto my-36'>
@@ -134,26 +136,26 @@ export const AddDish = () => {
           >
             옵션 추가하기
           </span>
-          {optionsNumber !== 0 &&
-            Array.from(new Array(optionsNumber)).map((_, index) => (
-              <div key={index} className='mt-5'>
+          {optionsNumber.length !== 0 &&
+            optionsNumber.map((id) => (
+              <div key={id} className='mt-5'>
                 <input
                   className='py-2 px-4 focus:outline-none focus:border-gray-500 border rounded mr-1'
                   ref={register}
-                  name={`${index}-optionName`}
+                  name={`${id}-optionName`}
                   type='text'
                   placeholder='옵션 이름'
                 />
                 <input
                   className='py-2 px-4 focus:outline-none focus:border-gray-500 border rounded '
                   ref={register}
-                  name={`${index}-optionExtraPrice`}
+                  name={`${id}-optionExtraPrice`}
                   type='number'
                   placeholder='추가 가격'
                   min={0}
                 />
                 <span
-                  onClick={() => onDeleteOptionClick(index)}
+                  onClick={() => onDeleteOptionClick(id)}
                   className='px-2 py-1 cursor-pointer'
                 >
                   ❌
