@@ -293,3 +293,13 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #68 Dish Options 2
 
 - #69 Dish Component
+
+- #70 Chart for Owner 1
+
+  > Using Victory
+
+  > https://formidable.com/open-source/victory/
+
+  ```bash
+  npm install victory
+  ```

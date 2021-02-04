@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 import { Dish } from '../../components/dish';
 import { Loading } from '../../components/loading';
+import { VictoryAxis, VictoryBar, VictoryChart } from 'victory';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
 import {
   myRestaurantQuery,
@@ -42,7 +43,7 @@ export const MyRestaurant = () => {
     return <Loading />;
   } else {
     return (
-      <div className='w-full max-w-7xl h-screen border border-gray-900 mx-auto'>
+      <div className='w-full max-w-7xl h-screen mx-auto'>
         <Helmet>
           <title>My Restaurant | Chober-Eats</title>
         </Helmet>
@@ -86,6 +87,27 @@ export const MyRestaurant = () => {
               ))}
             </div>
           )}
+          <div className='mt-20 pb-16 w-full flex flex-col items-center justify-center'>
+            <h1 className='text-2xl font-semibold'>판매량</h1>
+            <div>
+              <VictoryChart domainPadding={20}>
+                <VictoryAxis
+                  label='판매수'
+                  dependentAxis
+                  tickValues={[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
+                />
+                <VictoryAxis label='기간' />
+                <VictoryBar
+                  data={[
+                    { x: 10, y: 20 },
+                    { x: 20, y: 5 },
+                    { x: 35, y: 55 },
+                    { x: 45, y: 100 },
+                  ]}
+                />
+              </VictoryChart>
+            </div>
+          </div>
         </div>
       </div>
     );
