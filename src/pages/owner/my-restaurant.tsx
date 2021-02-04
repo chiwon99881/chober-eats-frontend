@@ -4,8 +4,20 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useParams } from 'react-router-dom';
 import { Dish } from '../../components/dish';
 import { Loading } from '../../components/loading';
-import { VictoryAxis, VictoryBar, VictoryChart } from 'victory';
-import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
+import {
+  VictoryAxis,
+  VictoryBar,
+  VictoryChart,
+  VictoryLabel,
+  VictoryLine,
+  VictoryTheme,
+  VictoryVoronoiContainer,
+} from 'victory';
+import {
+  DISH_FRAGMENT,
+  ORDER_FRAGMENT,
+  RESTAURANT_FRAGMENT,
+} from '../../fragments';
 import {
   myRestaurantQuery,
   myRestaurantQueryVariables,
@@ -21,11 +33,15 @@ export const MY_RESTAURANT_QUERY = gql`
         menu {
           ...DishFragment
         }
+        orders {
+          ...OrderFragment
+        }
       }
     }
   }
   ${RESTAURANT_FRAGMENT}
   ${DISH_FRAGMENT}
+  ${ORDER_FRAGMENT}
 `;
 
 interface IParams {
@@ -98,13 +114,42 @@ export const MyRestaurant = () => {
           <div className='mt-20 pb-16 w-full flex flex-col items-center justify-center'>
             <h1 className='text-2xl font-semibold'>판매량</h1>
             <div>
-              <VictoryChart domainPadding={20}>
+              {/* <VictoryChart domainPadding={20}>
                 <VictoryAxis
                   tickFormat={(step) => `${step / 1000}K`}
                   dependentAxis
                 />
                 <VictoryAxis tickFormat={(step) => `Day ${step}`} />
                 <VictoryBar data={chartData} />
+              </VictoryChart> */}
+              <VictoryChart
+                containerComponent={<VictoryVoronoiContainer />}
+                width={window.innerWidth}
+                height={800}
+                theme={VictoryTheme.material}
+                domainPadding={50}
+              >
+                <VictoryLine
+                  labels={({ datum }) => `${datum.y}원`}
+                  labelComponent={
+                    <VictoryLabel style={{ fontSize: 25 }} dy={-15} />
+                  }
+                  data={data?.myRestaurant.restaurant?.orders?.map((order) => ({
+                    x: order.createdAt,
+                    y: order.total,
+                  }))}
+                  style={{ data: { strokeWidth: 3 } }}
+                />
+                <VictoryAxis
+                  tickFormat={(tick) => new Date(tick).toLocaleDateString('ko')}
+                  style={{
+                    tickLabels: {
+                      fontSize: 30,
+                      fill: 'green',
+                      fontWeight: 600,
+                    },
+                  }}
+                />
               </VictoryChart>
             </div>
           </div>
