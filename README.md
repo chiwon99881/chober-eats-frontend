@@ -303,3 +303,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   ```bash
   npm install victory
   ```
+
+- #71 Chart for Owner 2

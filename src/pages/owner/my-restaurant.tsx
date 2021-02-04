@@ -38,7 +38,15 @@ export const MyRestaurant = () => {
     myRestaurantQuery,
     myRestaurantQueryVariables
   >(MY_RESTAURANT_QUERY, { variables: { input: { id: +params.id } } });
-  console.log(data);
+  const chartData = [
+    { x: 1, y: 2500 },
+    { x: 2, y: 1200 },
+    { x: 3, y: 860 },
+    { x: 4, y: 890 },
+    { x: 5, y: 1000 },
+    { x: 6, y: 1100 },
+    { x: 7, y: 4500 },
+  ];
   if (queryLoading || error) {
     return <Loading />;
   } else {
@@ -92,19 +100,11 @@ export const MyRestaurant = () => {
             <div>
               <VictoryChart domainPadding={20}>
                 <VictoryAxis
-                  label='판매수'
+                  tickFormat={(step) => `${step / 1000}K`}
                   dependentAxis
-                  tickValues={[10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}
                 />
-                <VictoryAxis label='기간' />
-                <VictoryBar
-                  data={[
-                    { x: 10, y: 20 },
-                    { x: 20, y: 5 },
-                    { x: 35, y: 55 },
-                    { x: 45, y: 100 },
-                  ]}
-                />
+                <VictoryAxis tickFormat={(step) => `Day ${step}`} />
+                <VictoryBar data={chartData} />
               </VictoryChart>
             </div>
           </div>
