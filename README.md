@@ -285,3 +285,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #66 My Restaurant Dashboard 3
 
   > Create Dish Component 2
+
+- #67 Dish Options 1
+
+  > 음식 메뉴의 여러 옵션을 frontend 에서 생성하기 위해

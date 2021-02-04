@@ -1,5 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
-import React from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useForm } from 'react-hook-form';
 import { useHistory, useParams } from 'react-router-dom';
@@ -39,6 +39,7 @@ export const AddDish = () => {
     errors,
     formState,
     getValues,
+    setValue,
   } = useForm<IFormProps>({
     mode: 'onChange',
   });
@@ -54,18 +55,31 @@ export const AddDish = () => {
     ],
   });
   const onSubmit = () => {
-    const { name, description, price } = getValues();
-    createDishMutation({
-      variables: {
-        input: {
-          restaurantId: +restaurantId,
-          name,
-          price: +price,
-          description,
-        },
-      },
-    });
-    history.goBack();
+    const { name, description, price, ...rest } = getValues();
+    console.log(rest);
+    // createDishMutation({
+    //   variables: {
+    //     input: {
+    //       restaurantId: +restaurantId,
+    //       name,
+    //       price: +price,
+    //       description,
+    //     },
+    //   },
+    // });
+    // history.goBack();
+  };
+  const [optionsNumber, setOptionsNumber] = useState(0);
+  const onAddOptionClick = () => {
+    setOptionsNumber((current) => current + 1);
+    console.log(optionsNumber);
+  };
+  const onDeleteOptionClick = (toDeleteId: number) => {
+    setOptionsNumber((current) => current - 1);
+    // @ts-ignore
+    setValue(`${toDeleteId}-optionName`, '');
+    // @ts-ignore
+    setValue(`${toDeleteId}-optionExtraPrice`, '');
   };
   return (
     <div className='w-full max-w-7xl flex flex-col items-center mx-auto my-36'>
@@ -107,10 +121,46 @@ export const AddDish = () => {
           className='input'
           placeholder='음식 상세설명 (5자 이상)'
           name='description'
+          min={5}
         />
         {errors.description?.message && (
           <FormError errorMessage={errors.description.message} />
         )}
+        <div className='py-12'>
+          <h1 className='font-semibold mb-2'>이 메뉴의 추가옵션</h1>
+          <span
+            className='p-1 text-white text-base font-semibold bg-black rounded cursor-pointer'
+            onClick={onAddOptionClick}
+          >
+            옵션 추가하기
+          </span>
+          {optionsNumber !== 0 &&
+            Array.from(new Array(optionsNumber)).map((_, index) => (
+              <div key={index} className='mt-5'>
+                <input
+                  className='py-2 px-4 focus:outline-none focus:border-gray-500 border rounded mr-1'
+                  ref={register}
+                  name={`${index}-optionName`}
+                  type='text'
+                  placeholder='옵션 이름'
+                />
+                <input
+                  className='py-2 px-4 focus:outline-none focus:border-gray-500 border rounded '
+                  ref={register}
+                  name={`${index}-optionExtraPrice`}
+                  type='number'
+                  placeholder='추가 가격'
+                  min={0}
+                />
+                <span
+                  onClick={() => onDeleteOptionClick(index)}
+                  className='px-2 py-1 cursor-pointer'
+                >
+                  ❌
+                </span>
+              </div>
+            ))}
+        </div>
         <Button
           actionText={'음식 추가하기'}
           canClick={formState.isValid}
