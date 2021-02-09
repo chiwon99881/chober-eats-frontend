@@ -12,6 +12,9 @@ interface IDishProps {
   options?: getRestaurantQuery_getRestaurant_restaurant_menu_options[] | null;
   addItemToOrder?: (dishId: number) => void;
   removeFromOrder?: (dishId: number) => void;
+  addOptionToItem?: (dishId: number, option: any) => void;
+  optionSelected?: (dishId: number, optionName: string) => boolean;
+  removeOptionFromItem?: (dishId: number, optionName: string) => void;
 }
 
 export const Dish: React.FC<IDishProps> = ({
@@ -25,6 +28,9 @@ export const Dish: React.FC<IDishProps> = ({
   options,
   addItemToOrder,
   removeFromOrder,
+  addOptionToItem,
+  optionSelected,
+  removeOptionFromItem,
 }) => {
   const onClick = () => {
     if (orderStarted && addItemToOrder && !isSelected) {
@@ -34,16 +40,47 @@ export const Dish: React.FC<IDishProps> = ({
       removeFromOrder(id);
     }
   };
+  const onOptionClick = (dishId: number, optionName: string) => {
+    if (
+      orderStarted &&
+      optionSelected &&
+      optionSelected(dishId, optionName) &&
+      removeOptionFromItem
+    ) {
+      return removeOptionFromItem(dishId, optionName);
+    }
+    if (
+      orderStarted &&
+      optionSelected &&
+      !optionSelected(dishId, optionName) &&
+      addOptionToItem
+    ) {
+      return addOptionToItem(dishId, { name: optionName });
+    }
+  };
   return (
     <div
-      onClick={onClick}
       className={`border px-8 pt-10 pb-5 transition-all ${
-        isSelected ? 'border-red-400' : 'border-gray-300 hover:border-gray-600'
+        isSelected ? 'border-lime-600' : 'border-gray-300 hover:border-gray-600'
       }`}
     >
-      <div className='mb-6'>
-        <span className='font-semibold text-lg mb-1 block'>{name}</span>
-        <span className='font-medium text-sm block'>{description}</span>
+      <div className='mb-6 flex justify-between items-center'>
+        <div>
+          <span className='font-semibold text-lg mb-1 block'>{name}</span>
+          <span className='font-medium text-sm block'>{description}</span>
+        </div>
+        {orderStarted && (
+          <button
+            onClick={onClick}
+            className={`${
+              isSelected
+                ? 'btn'
+                : 'py-3 px-5 text-lime-600 text-base rounded-lg border border-gray-300 focus:outline-none hover:text-lime-900 transition-colors'
+            }`}
+          >
+            {isSelected ? '취소' : '선택'}
+          </button>
+        )}
       </div>
       <span>{price}원</span>
       {isCustomer && options && options.length !== 0 && (
@@ -52,7 +89,15 @@ export const Dish: React.FC<IDishProps> = ({
             선택가능 옵션
           </span>
           {options.map((option, index) => (
-            <div key={index} className='flex items-center'>
+            <div key={index} className='flex items-center mb-1'>
+              <div
+                onClick={() => onOptionClick(id, option.name)}
+                className={`p-3 border border-gray-300 mr-3 cursor-pointer ${
+                  optionSelected && optionSelected(id, option.name)
+                    ? 'bg-lime-600'
+                    : ''
+                }`}
+              ></div>
               <h5 className='mr-3 text-sm '>{option.name}</h5>
               <h5 className='mr-3 text-sm opacity-75'>{option.extra}원</h5>
             </div>

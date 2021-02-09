@@ -57,25 +57,58 @@ export const Restaurant = () => {
       },
     },
   });
+  const getDish = (dishId: number) => {
+    return orderItems.find((orderItem) => orderItem.dishId === dishId);
+  };
   const triggerStartOrder = () => {
     setOrderStarted(true);
   };
   const isSelected = (dishId: number) => {
+    return Boolean(getDish(dishId));
+  };
+  const optionSelected = (dishId: number, optionName: string) => {
+    const dish = getDish(dishId);
     return Boolean(
-      orderItems.find((orderItems) => orderItems.dishId === dishId),
+      dish?.options?.find((findOption) => findOption.name === optionName),
     );
   };
   const addItemToOrder = (dishId: number) => {
     if (isSelected(dishId)) {
       return;
     }
-    setOrderItems((current) => [{ dishId, options: null }, ...current]);
+    setOrderItems((current) => [{ dishId, options: [] }, ...current]);
   };
   const removeFromOrder = (dishId: number) => {
     setOrderItems((current) =>
       current.filter((menu) => menu.dishId !== dishId),
     );
   };
+  const removeOptionFromItem = (dishId: number, optionName: string) => {
+    const dish = getDish(dishId);
+    if (dish) {
+      const removedOption = dish.options?.filter(
+        (option) => option.name !== optionName,
+      );
+      dish.options = removedOption;
+      removeFromOrder(dishId);
+      setOrderItems((current) => [...current, dish]);
+    }
+  };
+  const addOptionToItem = (dishId: number, option: any) => {
+    if (!isSelected(dishId)) {
+      return;
+    }
+    const findDish = getDish(dishId);
+    if (findDish) {
+      if (optionSelected(dishId, option.name)) {
+        return;
+      }
+      findDish.options?.push(option);
+      removeFromOrder(dishId);
+      setOrderItems((current) => [...current, findDish]);
+    }
+  };
+  console.log(orderItems);
   if (loading) {
     return <Loading />;
   } else {
@@ -136,6 +169,9 @@ export const Restaurant = () => {
                   options={menu.options}
                   addItemToOrder={addItemToOrder}
                   removeFromOrder={removeFromOrder}
+                  addOptionToItem={addOptionToItem}
+                  optionSelected={optionSelected}
+                  removeOptionFromItem={removeOptionFromItem}
                 />
               ))}
             </div>
