@@ -307,3 +307,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #71 Chart for Owner 2
 
 - #72 Chart for Owner 3
+
+- #73 Extending Dish Component
