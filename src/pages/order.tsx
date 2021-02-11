@@ -1,5 +1,5 @@
-import { gql, useQuery, useSubscription } from '@apollo/client';
-import React from 'react';
+import { gql, useQuery } from '@apollo/client';
+import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { FULL_ORDER_FRAGMENT } from '../fragments';
@@ -7,10 +7,7 @@ import {
   getOrderQuery,
   getOrderQueryVariables,
 } from '../__generated__/getOrderQuery';
-import {
-  orderUpdatesSubscription,
-  orderUpdatesSubscriptionVariables,
-} from '../__generated__/orderUpdatesSubscription';
+import { orderUpdatesSubscription } from '../__generated__/orderUpdatesSubscription';
 
 const GET_ORDER = gql`
   query getOrderQuery($input: GetOrderInput!) {
@@ -40,17 +37,41 @@ interface IParams {
 
 export const Order = () => {
   const params = useParams<IParams>();
-  const { data } = useQuery<getOrderQuery, getOrderQueryVariables>(GET_ORDER, {
+  const { data, subscribeToMore } = useQuery<
+    getOrderQuery,
+    getOrderQueryVariables
+  >(GET_ORDER, {
     variables: { input: { id: +params.id } },
   });
-  const { data: subscriptionData } = useSubscription<
-    orderUpdatesSubscription,
-    orderUpdatesSubscriptionVariables
-  >(ORDER_SUBSCRIPTION, {
-    variables: { input: { id: +params.id } },
-  });
+  useEffect(() => {
+    if (data?.getOrder.ok) {
+      subscribeToMore({
+        document: ORDER_SUBSCRIPTION,
+        variables: {
+          input: {
+            id: +params.id,
+          },
+        },
+        updateQuery: (
+          prev,
+          {
+            subscriptionData: { data },
+          }: { subscriptionData: { data: orderUpdatesSubscription } },
+        ) => {
+          if (!data) return prev;
+          return {
+            getOrder: {
+              ...prev.getOrder,
+              order: {
+                ...data.orderUpdates,
+              },
+            },
+          };
+        },
+      });
+    }
+  }, [data]);
   console.log(data);
-  console.log(subscriptionData);
   return (
     <div className='w-full max-w-7xl h-screen mx-auto'>
       <Helmet>
