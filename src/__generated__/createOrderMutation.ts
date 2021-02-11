@@ -12,6 +12,7 @@ import { CreateOrderInput } from "./globalTypes";
 export interface createOrderMutation_createOrder {
   __typename: "CreateOrderOutput";
   ok: boolean;
+  orderId: number | null;
   error: string | null;
 }
 

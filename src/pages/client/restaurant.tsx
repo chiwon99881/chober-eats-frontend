@@ -1,12 +1,16 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { Dish } from '../../components/dish';
 import { Loading } from '../../components/loading';
 import { DISH_FRAGMENT, RESTAURANT_FRAGMENT } from '../../fragments';
+import {
+  createOrderMutation,
+  createOrderMutationVariables,
+} from '../../__generated__/createOrderMutation';
 import {
   getRestaurantQuery,
   getRestaurantQueryVariables,
@@ -34,6 +38,7 @@ const CREATE_ORDER_MUTATION = gql`
   mutation createOrderMutation($input: CreateOrderInput!) {
     createOrder(input: $input) {
       ok
+      orderId
       error
     }
   }
@@ -46,6 +51,24 @@ interface IRestaurantParams {
 export const Restaurant = () => {
   const [orderStarted, setOrderStarted] = useState(false);
   const [orderItems, setOrderItems] = useState<CreateOrderItemInput[]>([]);
+  const history = useHistory();
+  const onCompleted = (data: createOrderMutation) => {
+    const {
+      createOrder: { ok, orderId },
+    } = data;
+    if (ok) {
+      const okAlert = window.confirm(
+        '주문이 완료되었습니다. 주문 상세보기 화면으로 진입 하시겠습니까?',
+      );
+      if (okAlert) {
+        history.push(`/orders/${orderId}`);
+      }
+    }
+  };
+  const [createOrderMutation] = useMutation<
+    createOrderMutation,
+    createOrderMutationVariables
+  >(CREATE_ORDER_MUTATION, { onCompleted });
   const params = useParams<IRestaurantParams>();
   const { loading, data } = useQuery<
     getRestaurantQuery,
@@ -108,6 +131,22 @@ export const Restaurant = () => {
       setOrderItems((current) => [...current, findDish]);
     }
   };
+  const triggerCancelOrder = () => {
+    setOrderStarted(false);
+    setOrderItems([]);
+  };
+  const triggerConfirmOrder = () => {
+    if (orderItems.length === 0) {
+      alert('주문할 메뉴를 선택해주세요.');
+      return;
+    }
+    const ok = window.confirm('주문 하시겠습니까?');
+    if (ok) {
+      createOrderMutation({
+        variables: { input: { restaurantId: +params.id, items: orderItems } },
+      });
+    }
+  };
   console.log(orderItems);
   if (loading) {
     return <Loading />;
@@ -143,12 +182,29 @@ export const Restaurant = () => {
         </div>
         <div className='w-full max-w-7xl mx-auto'>
           <div className='mt-10 flex justify-end'>
-            <button
-              onClick={triggerStartOrder}
-              className='btn text-sm font-semibold'
-            >
-              {orderStarted ? '메뉴 선택 중' : '주문하기'}
-            </button>
+            {!orderStarted ? (
+              <button
+                onClick={triggerStartOrder}
+                className='btn text-sm font-semibold'
+              >
+                메뉴 선택
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={triggerConfirmOrder}
+                  className='btn text-sm font-semibold mr-3'
+                >
+                  주문
+                </button>{' '}
+                <button
+                  onClick={triggerCancelOrder}
+                  className='btn text-sm font-semibold bg-gray-600 hover:bg-gray-700'
+                >
+                  취소
+                </button>
+              </>
+            )}
           </div>
           {data?.getRestaurant.restaurant?.menu?.length === 0 ? (
             <span className='text-3xl font-semibold mt-6 block'>

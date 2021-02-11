@@ -92,7 +92,9 @@ export const Dish: React.FC<IDishProps> = ({
             <div key={index} className='flex items-center mb-1'>
               <div
                 onClick={() => onOptionClick(id, option.name)}
-                className={`p-3 border border-gray-300 mr-3 cursor-pointer ${
+                className={`p-3 border border-gray-300 mr-3 ${
+                  orderStarted && 'cursor-pointer'
+                } ${
                   optionSelected && optionSelected(id, option.name)
                     ? 'bg-lime-600'
                     : ''
