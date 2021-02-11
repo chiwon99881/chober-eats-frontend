@@ -3,10 +3,12 @@ import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { FULL_ORDER_FRAGMENT } from '../fragments';
+import { useMe } from '../hooks/useMe';
 import {
   getOrderQuery,
   getOrderQueryVariables,
 } from '../__generated__/getOrderQuery';
+import { UserRole } from '../__generated__/globalTypes';
 import { orderUpdatesSubscription } from '../__generated__/orderUpdatesSubscription';
 
 const GET_ORDER = gql`
@@ -37,6 +39,7 @@ interface IParams {
 
 export const Order = () => {
   const params = useParams<IParams>();
+  const { data: useMeData } = useMe();
   const { data, subscribeToMore } = useQuery<
     getOrderQuery,
     getOrderQueryVariables
@@ -70,14 +73,14 @@ export const Order = () => {
         },
       });
     }
-  }, [data]);
+  }, [data, subscribeToMore]);
   console.log(data);
   return (
     <div className='w-full max-w-7xl h-screen mx-auto'>
       <Helmet>
         <title>Order Detail | Chober-Eats</title>
       </Helmet>
-      <div className='w-full h-screen flex items-center justify-center'>
+      <div className='w-full h-screen min-h-screen flex items-center justify-center'>
         <div className='w-full max-w-2xl border border-gray-400 h-1/3 rounded-md flex flex-col'>
           <div className='w-full py-6 bg-lime-700 flex items-center justify-center'>
             <span className='font-semibold text-white text-base'>
@@ -102,10 +105,24 @@ export const Order = () => {
                 : '드라이버: 미지정 상태'}
             </div>
             <div className='border-t border-gray-300 font-semibold text-base py-3 flex items-center justify-center h-full'>
-              주문상태:
-              <span className='text-xl font-semibold text-lime-700 ml-3'>
-                {data?.getOrder.order?.status}
-              </span>
+              {useMeData?.me.role === UserRole.Client && (
+                <>
+                  주문상태:
+                  <span className='text-xl font-semibold text-lime-700 ml-3'>
+                    {data?.getOrder.order?.status}
+                  </span>
+                </>
+              )}
+              {useMeData?.me.role === UserRole.Owner && (
+                <>
+                  {data?.getOrder.order?.status === 'Pending' && (
+                    <button className='btn'>주문 수락</button>
+                  )}
+                  {data?.getOrder.order?.status === 'Cooking' && (
+                    <button className='btn'>음식 준비완료</button>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>

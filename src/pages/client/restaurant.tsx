@@ -56,7 +56,7 @@ export const Restaurant = () => {
     const {
       createOrder: { ok, orderId },
     } = data;
-    if (ok && !createOrderLoading) {
+    if (ok) {
       const okAlert = window.confirm(
         '주문이 완료되었습니다. 주문 상세보기 화면으로 진입 하시겠습니까?',
       );
@@ -65,7 +65,7 @@ export const Restaurant = () => {
       }
     }
   };
-  const [createOrderMutation, { loading: createOrderLoading }] = useMutation<
+  const [createOrderMutation] = useMutation<
     createOrderMutation,
     createOrderMutationVariables
   >(CREATE_ORDER_MUTATION, { onCompleted });
@@ -180,7 +180,7 @@ export const Restaurant = () => {
             </div>
           </div>
         </div>
-        <div className='w-full max-w-7xl mx-auto'>
+        <div className='w-full max-w-7xl mx-auto px-6 pb-6'>
           <div className='mt-10 flex justify-end'>
             {!orderStarted ? (
               <button
