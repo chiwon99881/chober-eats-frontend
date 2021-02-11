@@ -56,7 +56,7 @@ export const Restaurant = () => {
     const {
       createOrder: { ok, orderId },
     } = data;
-    if (ok) {
+    if (ok && !createOrderLoading) {
       const okAlert = window.confirm(
         '주문이 완료되었습니다. 주문 상세보기 화면으로 진입 하시겠습니까?',
       );
@@ -65,7 +65,7 @@ export const Restaurant = () => {
       }
     }
   };
-  const [createOrderMutation] = useMutation<
+  const [createOrderMutation, { loading: createOrderLoading }] = useMutation<
     createOrderMutation,
     createOrderMutationVariables
   >(CREATE_ORDER_MUTATION, { onCompleted });

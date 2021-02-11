@@ -315,3 +315,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #75 Order Part 2
 
 - #76 Order Part 3
+
+- #77 My Order Component
