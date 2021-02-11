@@ -317,3 +317,9 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #76 Order Part 3
 
 - #77 My Order Component
+
+- #78 Order Subscription
+
+  ```bash
+  npm i subscriptions-transport-ws
+  ```
