@@ -330,3 +330,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
   > 그래서 뭐 useState를 통해서 변경해줘도 되겠지만 쿼리를 실행할 때 subscribeToMore이라는 함수를 사용하여 subscription이 일어날 때 쿼리를 알아서 업데이트 쳐줌
 
 - #80 Owner Subscribe pending order for redirect
+
+- #81 Edit OrderStatus Mutation

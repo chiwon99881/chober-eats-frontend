@@ -1,14 +1,18 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { FULL_ORDER_FRAGMENT } from '../fragments';
 import { useMe } from '../hooks/useMe';
 import {
+  editOrderMutation,
+  editOrderMutationVariables,
+} from '../__generated__/editOrderMutation';
+import {
   getOrderQuery,
   getOrderQueryVariables,
 } from '../__generated__/getOrderQuery';
-import { UserRole } from '../__generated__/globalTypes';
+import { OrderStatus, UserRole } from '../__generated__/globalTypes';
 import { orderUpdatesSubscription } from '../__generated__/orderUpdatesSubscription';
 
 const GET_ORDER = gql`
@@ -33,6 +37,15 @@ const ORDER_SUBSCRIPTION = gql`
   ${FULL_ORDER_FRAGMENT}
 `;
 
+const EDIT_ORDER = gql`
+  mutation editOrderMutation($input: EditOrderInput!) {
+    editOrder(input: $input) {
+      ok
+      error
+    }
+  }
+`;
+
 interface IParams {
   id: string;
 }
@@ -40,6 +53,10 @@ interface IParams {
 export const Order = () => {
   const params = useParams<IParams>();
   const { data: useMeData } = useMe();
+  const [editOrderMutation] = useMutation<
+    editOrderMutation,
+    editOrderMutationVariables
+  >(EDIT_ORDER);
   const { data, subscribeToMore } = useQuery<
     getOrderQuery,
     getOrderQueryVariables
@@ -73,8 +90,12 @@ export const Order = () => {
         },
       });
     }
-  }, [data, subscribeToMore]);
-  console.log(data);
+  }, [data, subscribeToMore, params.id]);
+  const onButtonClick = (newStatus: OrderStatus) => {
+    editOrderMutation({
+      variables: { input: { id: +params.id, status: newStatus } },
+    });
+  };
   return (
     <div className='w-full max-w-7xl h-screen mx-auto'>
       <Helmet>
@@ -115,12 +136,31 @@ export const Order = () => {
               )}
               {useMeData?.me.role === UserRole.Owner && (
                 <>
-                  {data?.getOrder.order?.status === 'Pending' && (
-                    <button className='btn'>주문 수락</button>
+                  {data?.getOrder.order?.status === OrderStatus.Pending && (
+                    <button
+                      onClick={() => onButtonClick(OrderStatus.Cooking)}
+                      className='btn'
+                    >
+                      주문 수락
+                    </button>
                   )}
-                  {data?.getOrder.order?.status === 'Cooking' && (
-                    <button className='btn'>음식 준비완료</button>
+                  {data?.getOrder.order?.status === OrderStatus.Cooking && (
+                    <button
+                      onClick={() => onButtonClick(OrderStatus.Cooked)}
+                      className='btn'
+                    >
+                      음식 준비완료
+                    </button>
                   )}
+                  {data?.getOrder.order?.status !== OrderStatus.Pending &&
+                    data?.getOrder.order?.status !== OrderStatus.Cooking && (
+                      <>
+                        주문상태:
+                        <span className='text-xl font-semibold text-lime-700 ml-3'>
+                          {data?.getOrder.order?.status}
+                        </span>
+                      </>
+                    )}
                 </>
               )}
             </div>
