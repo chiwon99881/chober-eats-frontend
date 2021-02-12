@@ -38,10 +38,11 @@ export const Dashboard = () => {
       const geocoder = new google.maps.Geocoder();
       geocoder.geocode(
         {
-          location: new google.maps.LatLng(driverCoords.lat, driverCoords.lng),
+          //location: new google.maps.LatLng(driverCoords.lat, driverCoords.lng),
+          address: '대한민국 경기도 고양시 덕양구 고양대로1384번길 30',
         },
         (result, status) => {
-          console.log(result, status);
+          console.log(result[0].geometry.location.toJSON(), status);
         },
       );
     }
@@ -49,6 +50,32 @@ export const Dashboard = () => {
   const onApiLoaded = ({ map, maps }: { map: any; maps: any }) => {
     map.panTo(new google.maps.LatLng(driverCoords?.lat, driverCoords?.lng));
     setMap(map);
+  };
+  const onButtonClick = () => {
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
+    if (map) {
+      console.log(driverCoords.lat, driverCoords.lng);
+      directionsRenderer.setMap(map);
+      directionsService.route(
+        {
+          origin: {
+            location: new google.maps.LatLng(
+              driverCoords.lat,
+              driverCoords.lng,
+            ),
+          },
+          destination: {
+            location: new google.maps.LatLng(37.6531712, 126.836678),
+          },
+          travelMode: google.maps.TravelMode.TRANSIT,
+        },
+        (result, status) => {
+          console.log(status, result);
+          directionsRenderer.setDirections(result);
+        },
+      );
+    }
   };
   return (
     <div>
@@ -70,6 +97,7 @@ export const Dashboard = () => {
           />
         </GoogleMapReact>
       </div>
+      <button onClick={onButtonClick}>길찾기</button>
     </div>
   );
 };
