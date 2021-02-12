@@ -340,3 +340,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 
   npm i @types/google-map-react
   ```
+
+- #83 Google Map for Driver 2
+
+  > Marker
