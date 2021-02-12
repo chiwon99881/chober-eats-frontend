@@ -6,10 +6,19 @@ interface ICoords {
   lng: number;
 }
 
+interface IMarkerDriverProps {
+  lat: number;
+  lng: number;
+  $hover?: any;
+}
+
+const MarkerDriver: React.FC<IMarkerDriverProps> = () => (
+  <div className='h-12 w-12 text-lg'>🔰</div>
+);
+
 export const Dashboard = () => {
-  const [driverCoords, setDriverCoords] = useState<ICoords>();
-  const [map, setMap] = useState<any>();
-  const [maps, setMaps] = useState<any>();
+  const [driverCoords, setDriverCoords] = useState<ICoords>({ lat: 0, lng: 0 });
+  const [map, setMap] = useState<google.maps.Map>();
   const onSuccess = ({
     coords: { latitude, longitude },
   }: GeolocationPosition) => {
@@ -24,16 +33,23 @@ export const Dashboard = () => {
     });
   }, [driverCoords]);
   useEffect(() => {
-    if (map && maps) {
-      map.panTo(new maps.LatLng(driverCoords?.lat, driverCoords?.lng));
+    if (map) {
+      map.panTo(new google.maps.LatLng(driverCoords?.lat, driverCoords?.lng));
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode(
+        {
+          location: new google.maps.LatLng(driverCoords.lat, driverCoords.lng),
+        },
+        (result, status) => {
+          console.log(result, status);
+        },
+      );
     }
-  }, [driverCoords?.lat, driverCoords?.lng]);
+  }, [driverCoords?.lat, driverCoords?.lng, map]);
   const onApiLoaded = ({ map, maps }: { map: any; maps: any }) => {
-    map.panTo(new maps.LatLng(driverCoords?.lat, driverCoords?.lng));
+    map.panTo(new google.maps.LatLng(driverCoords?.lat, driverCoords?.lng));
     setMap(map);
-    setMaps(maps);
   };
-  const MarkerDriver = () => <div className='h-12 w-12 text-lg'>🔰</div>;
   return (
     <div>
       <div

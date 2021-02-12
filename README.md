@@ -335,6 +335,9 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 
 - #82 Google Map for Driver 1
 
+  > Load GoogleMap
+  > console.cloud.google.com 에서 Maps JavaScript API
+
   ```bash
   npm i google-map-react
 
@@ -344,3 +347,12 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #83 Google Map for Driver 2
 
   > Marker
+
+- #84 Google Map for Driver 3
+
+  > Direction Settings
+  > Directions API / Geocoding API
+
+  ```bash
+  npm i -D @types/googlemaps
+  ```
