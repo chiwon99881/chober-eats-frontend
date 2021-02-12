@@ -1,5 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { gql, useSubscription } from '@apollo/client';
+import { FULL_ORDER_FRAGMENT } from '../../fragments';
+import { cookedOrdersSubscription } from '../../__generated__/cookedOrdersSubscription';
+import { Link } from 'react-router-dom';
+
+const COOKED_ORDERS_SUBSCRIPTION = gql`
+  subscription cookedOrdersSubscription {
+    cookedOrders {
+      ...FullOrderFragment
+    }
+  }
+  ${FULL_ORDER_FRAGMENT}
+`;
 
 interface ICoords {
   lat: number;
@@ -51,7 +64,7 @@ export const Dashboard = () => {
     map.panTo(new google.maps.LatLng(driverCoords?.lat, driverCoords?.lng));
     setMap(map);
   };
-  const onButtonClick = () => {
+  const onCookedOrders = () => {
     const directionsService = new google.maps.DirectionsService();
     const directionsRenderer = new google.maps.DirectionsRenderer();
     if (map) {
@@ -77,6 +90,14 @@ export const Dashboard = () => {
       );
     }
   };
+  const { data: cookedOrdersData } = useSubscription<cookedOrdersSubscription>(
+    COOKED_ORDERS_SUBSCRIPTION,
+  );
+  useEffect(() => {
+    if (cookedOrdersData?.cookedOrders.id) {
+      onCookedOrders();
+    }
+  }, [cookedOrdersData]);
   return (
     <div>
       <div
@@ -97,7 +118,18 @@ export const Dashboard = () => {
           />
         </GoogleMapReact>
       </div>
-      <button onClick={onButtonClick}>길찾기</button>
+      {cookedOrdersData?.cookedOrders && (
+        <div className='w-full max-w-screen-lg mx-auto bg-white flex items-center justify-center flex-col relative -top-10 py-10 px-5 shadow-md'>
+          <h1 className='text-3xl font-semibold'>New Cooked Order</h1>
+          <h4 className='text-xl font-medium'>Pick it up soon!</h4>
+          <Link
+            to={`/orders/${cookedOrdersData?.cookedOrders.id}`}
+            className='btn'
+          >
+            Accept Challenge
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

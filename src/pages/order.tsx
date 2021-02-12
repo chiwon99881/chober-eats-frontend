@@ -90,7 +90,7 @@ export const Order = () => {
         },
       });
     }
-  }, [data, subscribeToMore, params.id]);
+  }, [data]);
   const onButtonClick = (newStatus: OrderStatus) => {
     editOrderMutation({
       variables: { input: { id: +params.id, status: newStatus } },

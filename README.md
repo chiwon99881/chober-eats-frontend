@@ -360,3 +360,7 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #85 Google Map for Driver 4
 
   > direction
+
+- #86 Google Map for Driver 5
+
+  > Ready to Cooked Orders Subscription
