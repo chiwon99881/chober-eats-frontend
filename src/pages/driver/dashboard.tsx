@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import GoogleMapReact from 'google-map-react';
-import { gql, useSubscription } from '@apollo/client';
+import { gql, useMutation, useSubscription } from '@apollo/client';
 import { FULL_ORDER_FRAGMENT } from '../../fragments';
 import { cookedOrdersSubscription } from '../../__generated__/cookedOrdersSubscription';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
+import {
+  takeOrderMutation,
+  takeOrderMutationVariables,
+} from '../../__generated__/takeOrderMutation';
 
 const COOKED_ORDERS_SUBSCRIPTION = gql`
   subscription cookedOrdersSubscription {
@@ -12,6 +16,15 @@ const COOKED_ORDERS_SUBSCRIPTION = gql`
     }
   }
   ${FULL_ORDER_FRAGMENT}
+`;
+
+const TAKE_ORDER_MUTATION = gql`
+  mutation takeOrderMutation($input: TakeOrderInput!) {
+    takeOrder(input: $input) {
+      ok
+      error
+    }
+  }
 `;
 
 interface ICoords {
@@ -98,6 +111,21 @@ export const Dashboard = () => {
       onCookedOrders();
     }
   }, [cookedOrdersData]);
+  const history = useHistory();
+  const onCompleted = (data: takeOrderMutation) => {
+    if (data.takeOrder.ok) {
+      history.push(`/orders/${cookedOrdersData?.cookedOrders.id}`);
+    }
+  };
+  const [takeOrderMutation] = useMutation<
+    takeOrderMutation,
+    takeOrderMutationVariables
+  >(TAKE_ORDER_MUTATION, { onCompleted });
+  const triggerTakeOrderMutation = (orderId: number) => {
+    takeOrderMutation({
+      variables: { input: { id: orderId } },
+    });
+  };
   return (
     <div>
       <div
@@ -122,12 +150,14 @@ export const Dashboard = () => {
         <div className='w-full max-w-screen-lg mx-auto bg-white flex items-center justify-center flex-col relative -top-10 py-10 px-5 shadow-md'>
           <h1 className='text-3xl font-semibold'>New Cooked Order</h1>
           <h4 className='text-xl font-medium'>Pick it up soon!</h4>
-          <Link
-            to={`/orders/${cookedOrdersData?.cookedOrders.id}`}
+          <button
+            onClick={() =>
+              triggerTakeOrderMutation(cookedOrdersData.cookedOrders.id)
+            }
             className='btn'
           >
             Accept Challenge
-          </Link>
+          </button>
         </div>
       )}
     </div>

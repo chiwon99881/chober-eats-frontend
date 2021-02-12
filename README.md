@@ -364,3 +364,5 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #86 Google Map for Driver 5
 
   > Ready to Cooked Orders Subscription
+
+- #87 Final Subscription and Mutation

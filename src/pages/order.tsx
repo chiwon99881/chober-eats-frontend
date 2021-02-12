@@ -163,6 +163,33 @@ export const Order = () => {
                     )}
                 </>
               )}
+              {useMeData?.me.role === UserRole.Delivery && (
+                <>
+                  {data?.getOrder.order?.status === OrderStatus.Cooked && (
+                    <button
+                      onClick={() => onButtonClick(OrderStatus.PickedUp)}
+                      className='btn'
+                    >
+                      음식 수령
+                    </button>
+                  )}
+                  {data?.getOrder.order?.status === OrderStatus.PickedUp && (
+                    <button
+                      onClick={() => onButtonClick(OrderStatus.Delivered)}
+                      className='btn'
+                    >
+                      배달완료
+                    </button>
+                  )}
+                </>
+              )}
+              {data?.getOrder.order?.status === OrderStatus.Delivered && (
+                <>
+                  <span className='text-xl font-semibold text-lime-700 ml-3'>
+                    초버이츠를 사용해주셔서 감사합니다.
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </div>
