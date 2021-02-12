@@ -332,3 +332,11 @@ npm i --save @fortawesome/fontawesome-svg-core @fortawesome/free-solid-svg-icons
 - #80 Owner Subscribe pending order for redirect
 
 - #81 Edit OrderStatus Mutation
+
+- #82 Google Map for Driver 1
+
+  ```bash
+  npm i google-map-react
+
+  npm i @types/google-map-react
+  ```
